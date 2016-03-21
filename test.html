@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Collections demo</title>
+    <script src="collections.js"></script>
+    <script src="linq.js"></script>
+    <script src="http://code.jquery.com/jquery-git.min.js"></script>
+    <script>
+        var _collection = new collections();
+
+        var x = [{ A: "Hello", B: "Test", C: 84 }, { A: "Hello", B: "Test", C: 41 }, { A: "Test", B: "Test", C: 48 },
+            { A: "Test", B: "Test", C: 4 }, { A: "Hello", B: "Test", C: 24 }, { A: "Test", B: "Test", C: 14 }, ];
+
+        var y = [{ A: "Hello", D: "Test Y" }, { A: "Hello", D: "Test Y" }, { A: "Test", D: "Test Y" }, { A: "Hello", D: "Test Y" }];
+
+        //var t = _collection
+        //    .ToCollection(x)
+        //    .Where(function (itm) {
+        //        return itm.A === "Hello";
+        //    }).Collect();
+        //console.log(t);
+
+        var abc = _collection.ToCollection(x).Collect();
+        console.log(abc);
+
+
+        var a = [];
+        for (var i = 0; i < 2000000; ++i) {
+            a[i] = i;
+        }
+
+        function shuffle(array) {
+            var tmp, current, top = array.length;
+            if (top) while (--top) {
+                current = Math.floor(Math.random() * (top + 1));
+                tmp = array[current];
+                array[current] = array[top];
+                array[top] = tmp;
+            }
+            return array;
+        }
+        a = shuffle(a);
+
+    </script>
+</head>
+<body>
+    <div id="print">
+    </div>
+</body>
+</html>
