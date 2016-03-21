@@ -2,7 +2,7 @@
 <head>
     <title>Collections demo</title>
     <script src="collections.js"></script>
-    <script src="linq.js"></script>
+    <script src="collections2.js"></script>
     <script src="http://code.jquery.com/jquery-git.min.js"></script>
     <script>
         var _collection = new collections();
@@ -12,15 +12,12 @@
 
         var y = [{ A: "Hello", D: "Test Y" }, { A: "Hello", D: "Test Y" }, { A: "Test", D: "Test Y" }, { A: "Hello", D: "Test Y" }];
 
-        //var t = _collection
-        //    .ToCollection(x)
-        //    .Where(function (itm) {
-        //        return itm.A === "Hello";
-        //    }).Collect();
-        //console.log(t);
+        var t = x.ToCollection().GroupBy(function(itm) {
+            return itm.A;
+        });
+        console.log(t);
 
-        var abc = _collection.ToCollection(x).Collect();
-        console.log(abc);
+
 
 
         var a = [];

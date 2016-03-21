@@ -14,7 +14,7 @@ var collections = function () {
         return internalCollection;
     };
 
-    collection.Where = function (predicate) {
+    collection.where = function (predicate) {
         var results = [];
         for (var i = 0; i < internalCollection.length; i++) {
             if (predicate(internalCollection[i])) {
