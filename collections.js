@@ -2,7 +2,6 @@ var collections = function () {
 
     var self = this;
     var collection = function () {
-
     };
 
     var internalCollection = [];
