@@ -1,190 +1,381 @@
-var collections = function () {
 
-    var self = this;
-    var collection = function () {
-    };
+/* Library of various collections methods for javascript, Inspired by linq */
 
-    var internalCollection = [];
+define('collections', [], function () {
+		var Collections = function(array) {
+		this.collection = array;
+		};
 
-    collection.ToCollection = function (array) {
-        internalCollection = array;
-    };
 
-    collection.Collect = function () {
-        return internalCollection;
-    };
 
-    collection.where = function (predicate) {
-        var results = [];
-        for (var i = 0; i < internalCollection.length; i++) {
-            if (predicate(internalCollection[i])) {
-                results.push(internalCollection[i]);
-            }
-        }
-        internalCollection = results;
-        return self;
-    }
 
-    collection.First = function (predicate) {
-        for (var i = 0; i < internalCollection.length; i++) {
-            if (predicate(internalCollection[i])) {
-                internalCollection = internalCollection[i];
-                return;
-            }
-        }
-        return self;
-    };
 
-    collection.Count = function (array, predicate) {
-        argumentCheck(array, predicate);
-        var cnt = 0;
-        for (var i = 0; i < array.length; i++) {
-            if (predicate(array[i])) {
-                cnt++;
-            }
-        }
-        return cnt;
-    }
+		Collections.ToCollection = function (array) {
+		return new Collections(array);
+		};
 
-    collection.All = function (array, predicate) {
-        argumentCheck(array, predicate);
-        for (var i = 0; i < array.length; i++) {
-            if (!predicate(array[i])) {
-                return false;
-            }
-        }
-        return true;
-    };
 
-    collection.Any = function (array, predicate) {
-        argumentCheck(array, predicate);
-        for (var i = 0; i < array.length; i++) {
-            if (predicate(array[i])) {
-                return true;
-            }
-        }
-        return false;
-    };
-    
-    //http://stackoverflow.com/a/31081420
-    collection.GroupBy = function (keyFunction) {
-        var groups = {};
-        for (var i = 0; i < internalCollection.length; i++) {
-            var key = keyFunction(internalCollection[i]);
-            if (key in groups == false) {
-                groups[key] = [];
-            }
-            groups[key].push(internalCollection[i]);
 
-        }
-        internalCollection = Object.keys(groups).map(function(key) {
-           return {
-                key: key,
-                values: groups[key]
-            };
-        });
-        return self;
-    };
+		Collections.prototype.Collect = function () {
+		return this.collection;
+		};
 
-    collection.OrderBy = function (array, orderSelector) {
 
-    };
 
-    collection.OrderByDescending = function (array, orderSelector) {
+		Collections.prototype.Where = function (predicate) {
 
-    };
+			var results = [];
 
-    collection.Join = function (array1, array2, compareFunction) {
+			for (var i = 0; i < this.collection.length; i++) {
 
-    };
+				if (predicate(this.collection[i])) {
 
-    collection.Without = function (predicate) {
-        var result = [];
-        for (var i = 0; i < internalCollection.length; i++) {
-            if (!predicate(internalCollection[i])) {
-                result.push(internalCollection[i]);
-            }
-        }
-        internalCollection = result;
-        return self;
-    };
+					results.push(this.collection[i]);
 
-    collection.Distinct = function (array, valueSelector) {
-        argumentCheck(array, valueSelector);
-        var result = [];
-        for (var i = 0; i < array.length; i++) {
-            var tmp1 = valueSelector(array[i]);
-            for (var j = 0; j < result.length; j++) {
-                var tmp2 = valueSelector(result[j]);
-                if (tmp1 == tmp2)
-                    break;
-                else
-                    result.push(result[j]);
-            }
-        }
-        return result;
-    };
+				}
 
-    collection.Sum = function (array, valueSelector) {
-        argumentCheck(array, valueSelector);
-        var sum = 0;
-        for (var i = 0; i < array.length; i++) {
-            sum += valueSelector(array[i]);
-        }
-        return sum;
-    };
+			}
 
-    collection.Do = function (times, action) {
-        if (typeof action !== 'function') {
-            throw new Error('The predicate must be passed a function that returns a boolean');
-        }
-        for (var i = 0; i < times; i++) {
-            action();
-        }
-    };
+			this.collection = results;
 
-    collection.Range = function (min, max, step) {
-        step = step === undefined ? 1 : step;
-        var array = [];
-        for (var i = min; i <= max; i += step) {
-            array.push(i);
-        }
-        return array;
-    };
+			return this;
 
-    collection.Min = function (array, valueSelector) {
-        argumentCheck(array, valueSelector);
-        var len = array.length; 
-        var min = Infinity;
+		};
 
-        while (len--) {
-            if (Number(valueSelector(array[len])) < min) {
-                min = Number(valueSelector(array[len]));
-            }
-        }
-        return min;
-    };
 
-    collection.Max = function (array, valueSelector) {
-        var len = array.length; 
-        var max = -Infinity;
-        while (len--) {
-            if (Number(valueSelector(array[len])) > max) {
-                max = Number(valueSelector(array[len]));
-            }
-        }
-        return max;
-    };
 
-    var argumentCheck = function (array, predicate) {
-        if (typeof predicate !== 'function') {
-            throw new Error('The predicate must be passed a function that returns a boolean');
-        }
-        if (!(array instanceof Array)) {
-            throw new Error('The array must be of type array');
-        }
-    };
+		Collections.prototype.First = function (predicate) {
 
-    return collection;
-}
+			if (predicate === undefined) {
 
+				return this.collection[0];
+
+			}
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				if (predicate(this.collection[i])) {
+
+					return this.collection[i];
+
+				}
+
+			}
+
+			return null;
+
+		};
+
+
+
+		//javascripts map does the same thing more or less
+
+		Collections.prototype.Select = function (valueSelector) {
+
+			var result = [];
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				result.push(valueSelector(this.collection[i]));
+
+			}
+
+			this.collection = result;
+
+			return this;
+
+		};
+
+
+
+		Collections.prototype.Count = function (predicate) {
+
+			var cnt = 0;
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				if (predicate(this.collection[i])) {
+
+					cnt++;
+
+				}
+
+			}
+
+			return cnt;
+
+		};
+
+
+
+		Collections.prototype.All = function (predicate) {
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				if (!predicate(this.collection[i])) {
+
+					return false;
+
+				}
+
+			}
+
+			return true;
+
+		};
+
+
+
+		Collections.prototype.Any = function (predicate) {
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				if (predicate(this.collection[i])) {
+
+					return true;
+
+				}
+
+			}
+
+			return false;
+
+		};
+
+
+
+		Collections.prototype.GroupBy = function (keyFunction) {
+
+			var groups = {};
+
+			for (var i = 0; i < this.collection.length; i++) {
+
+				var key = keyFunction(this.collection[i]);
+
+				if (key in groups === false) {
+
+					groups[key] = [];
+
+				}
+
+				groups[key].push(this.collection[i]);
+
+
+
+			}
+
+			this.collection = Object.keys(groups).map(function (key) {
+
+					return {
+
+key: key,
+
+values: groups[key]
+
+};
+
+});
+
+return this;
+
+};
+
+
+
+Collections.prototype.OrderBy = function (orderSelector) {
+
+	this.collection = this.collection.sort(function (a, b) {
+
+			return orderSelector(a) > orderSelector(b);
+
+			});
+
+	return this;
+
+};
+
+
+
+Collections.prototype.OrderByDescending = function (orderSelector) {
+
+	this.collection = this.collection.sort(function (a, b) {
+
+			return orderSelector(a) < orderSelector(b);
+
+			});
+
+	return this;
+
+};
+
+
+
+Collections.prototype.Join = function (collection2, compareFunction) {
+
+
+
+};
+
+
+
+Collections.prototype.Without = function (predicate) {
+
+	var result = [];
+
+	for (var i = 0; i < this.collection.length; i++) {
+
+		if (!predicate(this.collection[i])) {
+
+			result.push(this.collection[i]);
+
+		}
+
+	}
+
+	this.collection = result;
+
+	return this;
+
+};
+
+
+
+Collections.prototype.Distinct = function (valueSelector) {
+
+	var result = [];
+
+
+
+	return this;
+
+};
+
+
+
+Collections.prototype.Sum = function (valueSelector) {
+
+	var sum = 0;
+
+	for (var i = 0; i < this.collection.length; i++) {
+
+		sum += valueSelector(this.collection[i]);
+
+	}
+
+	return sum;
+
+};
+
+
+
+Collections.prototype.Min = function (valueSelector) {
+
+	var len = this.collection.length;
+
+	var min = Infinity;
+
+
+
+	while (len--) {
+
+		if (Number(valueSelector(this.collection[len])) < min) {
+
+			min = Number(valueSelector(this.collection[len]));
+
+		}
+
+	}
+
+	return min;
+
+};
+
+
+
+Collections.prototype.ForEach = function (action) {
+
+	for (var i = 0; i < this.collection.length; i++) {
+
+		action(i, this.collection[i]);
+
+	}
+
+};
+
+
+
+Collections.prototype.Max = function (valueSelector) {
+
+	var len = this.collection.length;
+
+	var max = -Infinity;
+
+	while (len--) {
+
+		if (Number(valueSelector(this.collection[len])) > max) {
+
+			max = Number(valueSelector(this.collection[len]));
+
+		}
+
+	}
+
+	return max;
+
+};
+
+
+
+/* Static methods not refering to the interal collection */
+
+Collections.Do = function (times, action) {
+
+	if (typeof action !== 'function') {
+
+		throw new Error('The predicate must be passed a function that returns a boolean');
+
+	}
+
+	for (var i = 0; i < times; i++) {
+
+		action();
+
+	}
+
+};
+
+
+
+Collections.Range = function (min, max, step) {
+
+	step = step === undefined ? 1 : step;
+
+	var array = [];
+
+	for (var i = min; i <= max; i += step) {
+
+		array.push(i);
+
+	}
+
+	return array;
+
+};
+
+
+
+Collections.Remove = function (array, itm) {
+
+	var index = array.indexOf(itm);
+
+	array.splice(index);
+
+	return array;
+
+};
+
+
+
+return Collections;
+
+});
