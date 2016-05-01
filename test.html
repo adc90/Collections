@@ -5,37 +5,36 @@
     <script src="collections2.js"></script>
     <script src="http://code.jquery.com/jquery-git.min.js"></script>
     <script>
-        var _collection = new collections();
+console.log(Collections);
 
-        var x = [{ A: "Hello", B: "Test", C: 84 }, { A: "Hello", B: "Test", C: 41 }, { A: "Test", B: "Test", C: 48 },
-            { A: "Test", B: "Test", C: 4 }, { A: "Hello", B: "Test", C: 24 }, { A: "Test", B: "Test", C: 14 }, ];
+var x = [
+    { A: "Hello", B: "Test", C: 84 }, 
+    { A: "Hello", B: "Test", C: 41 }, 
+    { A: "Test", B: "Test", C: 48 },
+    { A: "Test", B: "Test", C: 4 }, 
+    { A: "Hello", B: "Test", C: 24 }, 
+    { A: "Test", B: "Test", C: 14 }, 
+];
 
-        var y = [{ A: "Hello", D: "Test Y" }, { A: "Hello", D: "Test Y" }, { A: "Test", D: "Test Y" }, { A: "Hello", D: "Test Y" }];
+var y = [
+    { A: "Hello", D: "Test Y" }, 
+    { A: "Hello", D: "Test Y" }, 
+    { A: "Test", D: "Test Y" }, 
+    { A: "Hello", D: "Test Y" }
+];
 
-        var t = x.ToCollection().GroupBy(function(itm) {
-            return itm.A;
-        });
-        console.log(t);
+var t = Collections.ToCollection(x).GroupBy(function(itm) {
+    return itm.A;
+}).Collect();
+console.log(t);
 
 
-
-
-        var a = [];
-        for (var i = 0; i < 2000000; ++i) {
-            a[i] = i;
-        }
-
-        function shuffle(array) {
-            var tmp, current, top = array.length;
-            if (top) while (--top) {
-                current = Math.floor(Math.random() * (top + 1));
-                tmp = array[current];
-                array[current] = array[top];
-                array[top] = tmp;
-            }
-            return array;
-        }
-        a = shuffle(a);
+var i = Collections.ToCollection(x).Join(y, function(a) {
+    return a.A;
+},
+function(b) {
+    return b.A;
+});
 
     </script>
 </head>
