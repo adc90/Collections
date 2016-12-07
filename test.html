@@ -1,45 +1,17 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Collections demo</title>
-    <script src="collections.js"></script>
-    <script src="collections2.js"></script>
-    <script src="http://code.jquery.com/jquery-git.min.js"></script>
-    <script>
-console.log(Collections);
-
-var x = [
-    { A: "Hello", B: "Test", C: 84 }, 
-    { A: "Hello", B: "Test", C: 41 }, 
-    { A: "Test", B: "Test", C: 48 },
-    { A: "Test", B: "Test", C: 4 }, 
-    { A: "Hello", B: "Test", C: 24 }, 
-    { A: "Test", B: "Test", C: 14 }, 
-];
-
-var y = [
-    { A: "Hello", D: "Test Y" }, 
-    { A: "Hello", D: "Test Y" }, 
-    { A: "Test", D: "Test Y" }, 
-    { A: "Hello", D: "Test Y" }
-];
-
-var t = Collections.ToCollection(x).GroupBy(function(itm) {
-    return itm.A;
-}).Collect();
-console.log(t);
-
-
-var i = Collections.ToCollection(x).Join(y, function(a) {
-    return a.A;
-},
-function(b) {
-    return b.A;
-});
-
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>QUnit Example</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css">
 </head>
 <body>
-    <div id="print">
-    </div>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="collections.js"></script>
+<script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
+<script src="collectionsTest.js"></script>
 </body>
 </html>
+

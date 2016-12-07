@@ -234,15 +234,6 @@ Collections.prototype.Last = function(predicate) {
 };
 
 Collections.prototype.Reduce = function (reductionFunction) {
-    var result = undefined;
-    for (var i = 0; i < this.collection.length; i++) {
-        if (i === 0) {
-            result = reductionFunction(this.collection[i]);
-        } else {
-            result += reductionFunction(this.collection[i]);
-        }
-    }
-    return result;
 };
 
 Collections.prototype.ToDictionary = function(keySelector, valueSelector) {
@@ -461,7 +452,8 @@ Collections.prototype.Distinct = function (comparisonFunction) {
 };
 
 Collections.prototype.Sum = function (valueSelector) {
-    if (valueSelector === undefined) { //Default argument
+    //Default argument
+    if (valueSelector === undefined) {
         valueSelector = this.utilities.identityFunction;
     }
 
