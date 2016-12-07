@@ -234,6 +234,19 @@ Collections.prototype.Last = function(predicate) {
 };
 
 Collections.prototype.Reduce = function (reductionFunction) {
+    var val = undefined;
+    if(this.collection === 1) {
+        return this.collection[0];
+    } else {
+        this.ForEach(function(i,v){
+            if(i === 0) {
+                val = v;
+            } else {
+                val = reductionFunction(val, v);
+            }
+        });
+    }
+    return val;
 };
 
 Collections.prototype.ToDictionary = function(keySelector, valueSelector) {
@@ -261,6 +274,13 @@ Collections.prototype.Select = function (valueSelector) {
     }
     this.collection = result;
     return this;
+};
+
+Collections.prototype.Average = function(valueSelector) {
+    var length = this.collection.length;
+    var sum = this.Sum(valueSelector);
+
+    return sum / length;
 };
 
 //This could be used along with the first, but I always forget to so that, so rather than refactor there is two methods
@@ -293,6 +313,21 @@ Collections.prototype.All = function (predicate) {
         }
     }
     return true;
+};
+
+Collections.prototype.Flatten = function() {
+
+    function flatten(collection) {
+        return collection.reduce(function(a,b){
+            if(Array.isArray(b)) {
+                return a.concat(flatten(b))
+            }
+            return a.concat(b);
+        }, [])
+    }
+    this.collection = flatten(this.collection);
+
+    return this;
 };
 
 Collections.prototype.Any = function (predicate) {
