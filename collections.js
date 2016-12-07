@@ -118,6 +118,9 @@ function Dictionary() {
     };
 }
 
+/*
+ * Constructor for the collections
+ */
 function Collections(array) {
     function Util() { }
 
@@ -329,6 +332,7 @@ Collections.prototype.GroupBy = function (keyFunction) {
             values: groups[key]
         };
     });
+
     return this;
 };
 
