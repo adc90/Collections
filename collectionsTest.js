@@ -9,10 +9,12 @@ QUnit.test("Collections test", function (assert) {
         .Sum(function (f) {
             return f;
         });
-    var val1 = 1;
-    var val2 = 1;
+
+    assert.ok(rng === 15, "rng === 15");
 
     /*
+    var val1 = 1;
+    var val2 = 1;
     var nums1 = Collections.ToCollection([2,7,5,6])
         .OrderByDescending(function(f) {
             return f;
@@ -31,7 +33,6 @@ QUnit.test("Collections test", function (assert) {
 
     alert(val);
     //Assert
-    assert.ok(rng === 15, "rng === 15");
     assert.ok(nums1 === "1 * 2 * 5 * 6", "nums === 60");
     assert.ok(nums2 === "2 * 1 * 5 * 6", "nums === 60");
     */
