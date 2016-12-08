@@ -27,7 +27,6 @@ QUnit.test("Sum and reduction test", function (assert) {
         });
 
     //Assert
-    console.log(nm);
     assert.ok(nm === "noraa", "Aaron backwards and to lowercase === noraa");
 });
 
@@ -39,6 +38,7 @@ QUnit.test("First and last test", function (assert) {
     assert.ok(nm.First() === "A", "['Aaron'].ToCollection().First() === 'A'");
     assert.ok(nm.Last() === "n", "['Aaron'].ToCollection().First() === 'n'");
 });
+
 QUnit.test("Group by test", function (assert) {
     //Setup
     var GradeLevel = { FirstYear: 1, SecondYear: 2, ThirdYear: 3, FourthYear: 4 };
@@ -67,9 +67,18 @@ QUnit.test("Group by test", function (assert) {
         .Select(function(f){
             return f.ExamScores;
         }).Flatten().Average();
-    console.log(s.Collect());
 
     //Assert
     assert.ok(s.First().values.length == 3, "Three garcia's")
     assert.ok(Math.round(garciaAverage) === 80, "Garcia's average is 80");
+});
+
+QUnit.test("Pluck test", function (assert) {
+    var names =  [ { Name: 'Aaron', Age: 10, Height: 6}, { Name: 'Greg', Age: 17, Height: 5} ];
+    var plucked = Collections.ToCollection(names)
+        .Pluck(['Name', 'Height'])
+        .First();
+
+    assert.ok(('Age' in names[0]) === true, "All three properties");
+    assert.ok(('Age' in plucked) === false, "Property is removed");
 });

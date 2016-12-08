@@ -1,3 +1,5 @@
+console.log('test');
+
 function OrderedList(array, comparisonFunc) {
     this.collection = null;
     this.comparisonFunction = null;
@@ -37,7 +39,6 @@ OrderedList.prototype.Add = function(val) {
 
 OrderedList.prototype.Clear = function() {
     this.collection = [];
-
     return this;
 };
 
@@ -290,6 +291,17 @@ Collections.prototype.SelectIndex = function (valueSelector) {
         result.push(valueSelector(i, this.collection[i]));
     }
     this.collection = result;
+    return this;
+};
+
+Collections.prototype.Pluck = function(items) {
+    this.Select(function(f){
+        var obj = {};
+        for(var i = 0; i < items.length; i++) {
+            obj[items[i]] = f[items[i]];
+        }
+        return obj;
+    });
     return this;
 };
 
