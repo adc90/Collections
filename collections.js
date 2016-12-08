@@ -298,7 +298,9 @@ Collections.prototype.Pluck = function(items) {
     this.Select(function(f){
         var obj = {};
         for(var i = 0; i < items.length; i++) {
-            obj[items[i]] = f[items[i]];
+            if(f.hasOwnProperty(items[i])) {
+                obj[items[i]] = f[items[i]];
+            }
         }
         return obj;
     });
