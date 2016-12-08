@@ -1,4 +1,4 @@
-console.log('test');
+
 
 function OrderedList(array, comparisonFunc) {
     this.collection = null;
@@ -24,7 +24,7 @@ function OrderedList(array, comparisonFunc) {
         : function(a, b) { return a > b ? 1 : (a < b ? -1 : 0); };
 
     this.collection.sort(function(a,b){
-       return this.comparisonFunction(a,b);
+        return this.comparisonFunction(a,b);
     }.bind(this));
 
     return this;
@@ -161,403 +161,403 @@ Collections.ToCollection = function (array) {
     return new Collections(array);
 };
 
-Collections.prototype.Collect = function () {
-    return this.collection;
-};
+Collections.prototype = {
+    Collect:  function () {
+        return this.collection;
+    },
 
-Collections.prototype.Difference = function(rightCollection, comparisonFunction){
-    throw new Error("Not implemented exception");
-};
+    Difference: function(rightCollection, comparisonFunction){
+        throw new Error("Not implemented exception");
+    },
 
-Collections.prototype.Intersection = function(rightCollection, comparisonFunction) {
-    var result = [];
+    Intersection: function(rightCollection, comparisonFunction) {
+        var result = [];
 
-    var compareTo = function(a,b) {
-        return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
-            ? comparisonFunction(a) === comparisonFunction(b)
-            : this.utilities.isEqual(a,b);
-    }.bind(this);
+        var compareTo = function(a,b) {
+            return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
+                ? comparisonFunction(a) === comparisonFunction(b)
+                : this.utilities.isEqual(a,b);
+        }.bind(this);
 
-    this.ForEach(function (idx, val) {
-        for(var i = 0; i < rightCollection.length; i++){
-            if(compareTo(val, rightCollection[i])) {
-                result.push(val);
-            }
-        }
-    });
-
-    this.collection = result;
-    return this;
-};
-
-Collections.prototype.PullAt = function(array) {
-    var result = [];
-    for(var i = 0; i < array.length; i++) {
-        result.push(this.collection[array[i]]);
-    }
-    this.collection = result;
-
-    return this;
-};
-
-Collections.prototype.Where = function (predicate) {
-    var results = [];
-    for (var i = 0; i < this.collection.length; i++) {
-        if (predicate(this.collection[i])) {
-            results.push(this.collection[i]);
-        }
-    }
-    this.collection = results;
-    return this;
-};
-
-Collections.prototype.First = function (predicate) {
-    if (predicate === undefined) {
-        return this.collection[0];
-    }
-    for (var i = 0; i < this.collection.length; i++) {
-        if (predicate(this.collection[i])) {
-            return this.collection[i];
-        }
-    }
-    return null;
-};
-
-Collections.prototype.Last = function(predicate) {
-    if (predicate === undefined) {
-        return this.collection[this.collection.length - 1];
-    }
-    for(var i = this.collection.length; i > 0; i--) {
-        if (predicate(this.collection[i])) {
-            return this.collection[i];
-        }
-    }
-};
-
-Collections.prototype.Reduce = function (reductionFunction) {
-    var val = undefined;
-    if(this.collection === 1) {
-        return this.collection[0];
-    } else {
-        this.ForEach(function(i,v){
-            if(i === 0) {
-                val = v;
-            } else {
-                val = reductionFunction(val, v);
+        this.ForEach(function (idx, val) {
+            for(var i = 0; i < rightCollection.length; i++){
+                if(compareTo(val, rightCollection[i])) {
+                    result.push(val);
+                }
             }
         });
-    }
-    return val;
-};
 
-Collections.prototype.ToDictionary = function(keySelector, valueSelector) {
-    var dictionary = new Dictionary();
-    this.ForEach(function(i, v) {
-        dictionary.Add(keySelector(v), valueSelector(v));
-    });
-    return dictionary;
-};
+        this.collection = result;
+        return this;
+    },
 
-Collections.prototype.Contains = function (item) {
-    for (var i = 0; i < this.collection.length; i++) {
-        if (this.collection[i] === item) {
-            return true;
+    PullAt: function(array) {
+        var result = [];
+        for(var i = 0; i < array.length; i++) {
+            result.push(this.collection[array[i]]);
         }
-    }
-    return false;
-};
+        this.collection = result;
 
-//JavaScript's map does the same thing more or less
-Collections.prototype.Select = function (valueSelector) {
-    var result = [];
-    for (var i = 0; i < this.collection.length; i++) {
-        result.push(valueSelector(this.collection[i]));
-    }
-    this.collection = result;
-    return this;
-};
+        return this;
+    },
 
-Collections.prototype.Average = function(valueSelector) {
-    var length = this.collection.length;
-    var sum = this.Sum(valueSelector);
-
-    return sum / length;
-};
-
-//This could be used along with the first, but I always forget to so that, so rather than refactor there is two methods
-Collections.prototype.SelectIndex = function (valueSelector) {
-    var result = [];
-    for (var i = 0; i < this.collection.length; i++) {
-        result.push(valueSelector(i, this.collection[i]));
-    }
-    this.collection = result;
-    return this;
-};
-
-Collections.prototype.Pluck = function(items) {
-    this.Select(function(f){
-        var obj = {};
-        for(var i = 0; i < items.length; i++) {
-            if(f.hasOwnProperty(items[i])) {
-                obj[items[i]] = f[items[i]];
+    Where:  function (predicate) {
+        var results = [];
+        for (var i = 0; i < this.collection.length; i++) {
+            if (predicate(this.collection[i])) {
+                results.push(this.collection[i]);
             }
         }
-        return obj;
-    });
-    return this;
-};
+        this.collection = results;
+        return this;
+    },
 
-Collections.prototype.Count = function (predicate) {
-    if (predicate === undefined) {
-        return this.collection.length;
-    }
-    var cnt = 0;
-    for (var i = 0; i < this.collection.length; i++) {
-        if (predicate(this.collection[i])) {
-            cnt++;
+    First: function (predicate) {
+        if (predicate === undefined) {
+            return this.collection[0];
         }
-    }
-    return cnt;
-};
-
-Collections.prototype.All = function (predicate) {
-    for (var i = 0; i < this.collection.length; i++) {
-        if (!predicate(this.collection[i])) {
-            return false;
-        }
-    }
-    return true;
-};
-
-Collections.prototype.Flatten = function() {
-
-    function flatten(collection) {
-        return collection.reduce(function(a,b){
-            if(Array.isArray(b)) {
-                return a.concat(flatten(b))
-            }
-            return a.concat(b);
-        }, [])
-    }
-    this.collection = flatten(this.collection);
-
-    return this;
-};
-
-Collections.prototype.Any = function (predicate) {
-    if (predicate === undefined) {
-        return this.collection.length > 0;
-    }
-    for (var i = 0; i < this.collection.length; i++) {
-        if (predicate(this.collection[i])) {
-            return true;
-        }
-    }
-    return false;
-};
-
-Collections.prototype.GroupBy = function (keyFunction) {
-    var groups = {};
-    for (var i = 0; i < this.collection.length; i++) {
-        var key = keyFunction(this.collection[i]);
-        if (key in groups === false) {
-            groups[key] = [];
-        }
-        groups[key].push(this.collection[i]);
-
-    }
-    this.collection = Object.keys(groups).map(function (key) {
-        return {
-            key: key,
-            values: groups[key]
-        };
-    });
-
-    return this;
-};
-
-Collections.prototype.OrderBy = function (orderSelector, comparisonFunc) {
-    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-
-    this.collection.sort(function (a, b) {
-        return compareTo(orderSelector(a),orderSelector(b));
-    }.bind(this));
-
-    return this;
-};
-
-Collections.prototype.OrderByDescending = function (orderSelector, comparisonFunc) {
-    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-
-    this.collection = this.collection.sort(function (a, b) {
-        return compareTo(orderSelector(b),orderSelector(a));
-    }.bind(this));
-
-    return this;
-};
-
-Collections.prototype.Join = function (rightCollection, leftKey, rightKey, selectedResult) {
-    var result = [];
-    var leftIntermediateResult = [];
-    var rightIntermediateResult = [];
-    for (var i = 0; i < this.collection.length; i++) {
-        var lKey = leftKey(this.collection[i]);
-        var leftObj = null;
-        var rightObj = null;
-        for (var j = 0; j < rightCollection.length; j++) {
-            var rKey = rightKey(rightCollection[j]);
-            if (lKey === rKey) {
-                leftObj = {};
-                rightObj = {};
-                for (var lVal in this.collection[i]) {
-                    leftObj[lVal] = this.collection[i][lVal];
-                }
-                for (var rVal in rightCollection[j]) {
-                    rightObj[rVal] = rightCollection[j][rVal];
-                }
-                leftIntermediateResult.push(leftObj);
-                rightIntermediateResult.push(rightObj);
+        for (var i = 0; i < this.collection.length; i++) {
+            if (predicate(this.collection[i])) {
+                return this.collection[i];
             }
         }
-    }
+        return null;
+    },
 
-    for (var k = 0; k < leftIntermediateResult.length; k++) {
-        result.push(selectedResult(leftIntermediateResult[k], rightIntermediateResult[k]));
-    }
-    this.collection = result;
-
-    return this;
-};
-
-Collections.prototype.Reverse = function() {
-    var result = [];
-    for (var i = this.collection.length - 1; i > -1; i--) {
-        result.push(this.collection[i]);
-    }
-    this.collection = result;
-
-    return this;
-};
-
-Collections.prototype.Without = function (predicate) {
-    var result = [];
-    for (var i = 0; i < this.collection.length; i++) {
-        if (!predicate(this.collection[i])) {
-            result.push(this.collection[i]);
+    Last: function(predicate) {
+        if (predicate === undefined) {
+            return this.collection[this.collection.length - 1];
         }
-    }
-    this.collection = result;
-    return this;
-};
-
-Collections.prototype.TakeWhile = function (predicate) {
-    var result = [];
-
-    for (var i = 0; i < this.collection.length; i++) {
-        if (predicate(this.collection[i])) {
-            result.push(this.collection[i]);
-        }else{
-            break;
+        for(var i = this.collection.length; i > 0; i--) {
+            if (predicate(this.collection[i])) {
+                return this.collection[i];
+            }
         }
-    }
-    this.collection = result;
-    return this;
-};
+    },
 
-Collections.prototype.Union = function(rightCollection, valueSelector) {
-    this.collection = this.collection.concat(rightCollection);
-    this.Distinct(valueSelector);
-
-    return this;
-};
-
-Collections.prototype.Distinct = function (comparisonFunction) {
-    var result = [];
-    //If were're supplied with a value selector function we'll use that to compare the values.
-    //Otherwise we'll use the default deep compare as supplied by the utilities class in this library
-    var compareTo = function(a,b) {
-        return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
-            ? comparisonFunction(a) === comparisonFunction(b)
-            : this.utilities.isEqual(a,b);
-    }.bind(this);
-
-    function exists(results, item) {
-        var inArray = false;
-        for(var i = 0; i < result.length; i++) {
-            if(compareTo(result[i], item))
-                return true;
-        }
-        return inArray;
-    }
-
-    for (var i = 0; i < this.collection.length; i++) {
-        if(!exists(result, this.collection[i])){
-            result.push(this.collection[i]);
-        }
-    }
-    this.collection = result;
-
-    return this;
-};
-
-Collections.prototype.Sum = function (valueSelector) {
-    //Default argument
-    if (valueSelector === undefined) {
-        valueSelector = this.utilities.identityFunction;
-    }
-
-    var sum = 0;
-    for (var i = 0; i < this.collection.length; i++) {
-        sum += valueSelector(this.collection[i]);
-    }
-    return sum;
-};
-
-Collections.prototype.Min = function (valueSelector) {
-    var len = this.collection.length;
-    var min = Infinity;
-
-    while (len--) {
-        if (Number(valueSelector(this.collection[len])) < min) {
-            min = Number(valueSelector(this.collection[len]));
-        }
-    }
-    return min;
-};
-
-Collections.prototype.ForEach = function (action) {
-    for (var i = 0; i < this.collection.length; i++) {
-        action(i, this.collection[i]);
-    }
-};
-
-Collections.prototype.Max = function (valueSelector) {
-    var len = this.collection.length;
-    var max = -Infinity;
-    while (len--) {
-        if (Number(valueSelector(this.collection[len])) > max) {
-            max = Number(valueSelector(this.collection[len]));
-        }
-    }
-    return max;
-};
-
-Collections.prototype.Partition = function(partitionBy) {
-    var resultA = [];
-    var resultB = [];
-    this.ForEach(function(i,v) {
-        if (partitionBy(v)) {
-            resultA.push(v);
+    Reduce:  function (reductionFunction) {
+        var val = undefined;
+        if(this.collection === 1) {
+            return this.collection[0];
         } else {
-            resultB.push(v);
+            this.ForEach(function(i,v){
+                if(i === 0) {
+                    val = v;
+                } else {
+                    val = reductionFunction(val, v);
+                }
+            });
         }
-    });
-    this.collection = [resultA, resultB];
-    return this;
-};
+        return val;
+    },
 
-Collections.prototype.Skip = function (times) {
-    return this.collection.slice(times);
+    ToDictionary: function(keySelector, valueSelector) {
+        var dictionary = new Dictionary();
+        this.ForEach(function(i, v) {
+            dictionary.Add(keySelector(v), valueSelector(v));
+        });
+        return dictionary;
+    },
+
+    Contains:  function (item) {
+        for (var i = 0; i < this.collection.length; i++) {
+            if (this.collection[i] === item) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    //JavaScript's map does the same thing more or less
+    Select: function (valueSelector) {
+        var result = [];
+        for (var i = 0; i < this.collection.length; i++) {
+            result.push(valueSelector(this.collection[i]));
+        }
+        this.collection = result;
+        return this;
+    },
+
+    Average: function(valueSelector) {
+        var length = this.collection.length;
+        var sum = this.Sum(valueSelector);
+
+        return sum / length;
+    },
+
+    SelectIndex:  function (valueSelector) {
+        var result = [];
+        for (var i = 0; i < this.collection.length; i++) {
+            result.push(valueSelector(i, this.collection[i]));
+        }
+        this.collection = result;
+        return this;
+    },
+
+    Pluck:  function(items) {
+        this.Select(function(f){
+            var obj = {};
+            for(var i = 0; i < items.length; i++) {
+                if(f.hasOwnProperty(items[i])) {
+                    obj[items[i]] = f[items[i]];
+                }
+            }
+            return obj;
+        });
+        return this;
+    },
+
+    Count: function (predicate) {
+        if (predicate === undefined) {
+            return this.collection.length;
+        }
+        var cnt = 0;
+        for (var i = 0; i < this.collection.length; i++) {
+            if (predicate(this.collection[i])) {
+                cnt++;
+            }
+        }
+        return cnt;
+    },
+
+    All: function (predicate) {
+        for (var i = 0; i < this.collection.length; i++) {
+            if (!predicate(this.collection[i])) {
+                return false;
+            }
+        }
+        return true;
+    },
+
+    Flatten:  function() {
+
+        function flatten(collection) {
+            return collection.reduce(function(a,b){
+                if(Array.isArray(b)) {
+                    return a.concat(flatten(b))
+                }
+                return a.concat(b);
+            }, [])
+        }
+        this.collection = flatten(this.collection);
+
+        return this;
+    },
+
+    Any: function (predicate) {
+        if (predicate === undefined) {
+            return this.collection.length > 0;
+        }
+        for (var i = 0; i < this.collection.length; i++) {
+            if (predicate(this.collection[i])) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    GroupBy: function (keyFunction) {
+        var groups = {};
+        for (var i = 0; i < this.collection.length; i++) {
+            var key = keyFunction(this.collection[i]);
+            if (key in groups === false) {
+                groups[key] = [];
+            }
+            groups[key].push(this.collection[i]);
+
+        }
+        this.collection = Object.keys(groups).map(function (key) {
+            return {
+                key: key,
+                values: groups[key]
+            };
+        });
+
+        return this;
+    },
+
+    OrderBy: function (orderSelector, comparisonFunc) {
+        var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
+
+        this.collection.sort(function (a, b) {
+            return compareTo(orderSelector(a),orderSelector(b));
+        }.bind(this));
+
+        return this;
+    },
+
+    OrderByDescending:  function (orderSelector, comparisonFunc) {
+        var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
+
+        this.collection = this.collection.sort(function (a, b) {
+            return compareTo(orderSelector(b),orderSelector(a));
+        }.bind(this));
+
+        return this;
+    },
+
+    Join: function (rightCollection, leftKey, rightKey, selectedResult) {
+        var result = [];
+        var leftIntermediateResult = [];
+        var rightIntermediateResult = [];
+        for (var i = 0; i < this.collection.length; i++) {
+            var lKey = leftKey(this.collection[i]);
+            var leftObj = null;
+            var rightObj = null;
+            for (var j = 0; j < rightCollection.length; j++) {
+                var rKey = rightKey(rightCollection[j]);
+                if (lKey === rKey) {
+                    leftObj = {};
+                    rightObj = {};
+                    for (var lVal in this.collection[i]) {
+                        leftObj[lVal] = this.collection[i][lVal];
+                    }
+                    for (var rVal in rightCollection[j]) {
+                        rightObj[rVal] = rightCollection[j][rVal];
+                    }
+                    leftIntermediateResult.push(leftObj);
+                    rightIntermediateResult.push(rightObj);
+                }
+            }
+        }
+
+        for (var k = 0; k < leftIntermediateResult.length; k++) {
+            result.push(selectedResult(leftIntermediateResult[k], rightIntermediateResult[k]));
+        }
+        this.collection = result;
+
+        return this;
+    },
+
+    Reverse:  function() {
+        var result = [];
+        for (var i = this.collection.length - 1; i > -1; i--) {
+            result.push(this.collection[i]);
+        }
+        this.collection = result;
+
+        return this;
+    },
+
+    Without: function (predicate) {
+        var result = [];
+        for (var i = 0; i < this.collection.length; i++) {
+            if (!predicate(this.collection[i])) {
+                result.push(this.collection[i]);
+            }
+        }
+        this.collection = result;
+        return this;
+    },
+
+    TakeWhile:  function (predicate) {
+        var result = [];
+
+        for (var i = 0; i < this.collection.length; i++) {
+            if (predicate(this.collection[i])) {
+                result.push(this.collection[i]);
+            }else{
+                break;
+            }
+        }
+        this.collection = result;
+        return this;
+    },
+
+    Union: function(rightCollection, valueSelector) {
+        this.collection = this.collection.concat(rightCollection);
+        this.Distinct(valueSelector);
+
+        return this;
+    },
+
+    Distinct: function (comparisonFunction) {
+        var result = [];
+        //If were're supplied with a value selector function we'll use that to compare the values.
+        //Otherwise we'll use the default deep compare as supplied by the utilities class in this library
+        var compareTo = function(a,b) {
+            return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
+                ? comparisonFunction(a) === comparisonFunction(b)
+                : this.utilities.isEqual(a,b);
+        }.bind(this);
+
+        function exists(results, item) {
+            var inArray = false;
+            for(var i = 0; i < result.length; i++) {
+                if(compareTo(result[i], item))
+                    return true;
+            }
+            return inArray;
+        }
+
+        for (var i = 0; i < this.collection.length; i++) {
+            if(!exists(result, this.collection[i])){
+                result.push(this.collection[i]);
+            }
+        }
+        this.collection = result;
+
+        return this;
+    },
+
+    Sum:  function (valueSelector) {
+        if (valueSelector === undefined) {
+            valueSelector = this.utilities.identityFunction;
+        }
+
+        var sum = 0;
+        for (var i = 0; i < this.collection.length; i++) {
+            sum += valueSelector(this.collection[i]);
+        }
+        return sum;
+    },
+
+    Min: function (valueSelector) {
+        var len = this.collection.length;
+        var min = Infinity;
+
+        while (len--) {
+            if (Number(valueSelector(this.collection[len])) < min) {
+                min = Number(valueSelector(this.collection[len]));
+            }
+        }
+        return min;
+    },
+
+    ForEach: function (action) {
+        for (var i = 0; i < this.collection.length; i++) {
+            action(i, this.collection[i]);
+        }
+    },
+
+    Max: function (valueSelector) {
+        var len = this.collection.length;
+        var max = -Infinity;
+        while (len--) {
+            if (Number(valueSelector(this.collection[len])) > max) {
+                max = Number(valueSelector(this.collection[len]));
+            }
+        }
+        return max;
+    },
+
+    Partition: function(partitionBy) {
+        var resultA = [];
+        var resultB = [];
+        this.ForEach(function(i,v) {
+            if (partitionBy(v)) {
+                resultA.push(v);
+            } else {
+                resultB.push(v);
+            }
+        });
+        this.collection = [resultA, resultB];
+        return this;
+    },
+
+    Skip: function (times) {
+        return this.collection.slice(times);
+    }
 };
 
 /* Static methods not referring to the internal collection */
