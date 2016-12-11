@@ -1,124 +1,4 @@
 
-
-function OrderedList(array, comparisonFunc) {
-    this.collection = null;
-    this.comparisonFunction = null;
-    var constructorCheck = {arrayInd: false, comparisonInd: false};
-
-    if(array){
-        if(!array instanceof Array) {
-            throw new Error("Constructor only accepts type of Array");
-        }
-        constructorCheck.arrayInd = true;
-    }
-    if(comparisonFunc) {
-        if(!comparisonFunc instanceof Function) {
-            throw new Error("comparisonFunc must be a function");
-        }
-        constructorCheck.comparisonInd = true;
-    }
-    this.collection = constructorCheck.arrayInd ? array : [];
-
-    this.comparisonFunction = constructorCheck.comparisonInd
-        ? comparisonFunc
-        : function(a, b) { return a > b ? 1 : (a < b ? -1 : 0); };
-
-    this.collection.sort(function(a,b){
-        return this.comparisonFunction(a,b);
-    }.bind(this));
-
-    return this;
-}
-
-OrderedList.prototype.Add = function(val) {
-    this.collection.push(val);
-    this.collection.sort(function(a,b){
-        return this.comparisonFunction(a,b);
-    }.bind(this));
-};
-
-OrderedList.prototype.Clear = function() {
-    this.collection = [];
-    return this;
-};
-
-OrderedList.prototype.Collect = function() {
-    return this.collection;
-};
-
-function Dictionary() {
-    var _dictList = [];
-
-    function KeyValuePair(key, value) {
-        if (typeof key !== "string" && typeof key !== "number") {
-            throw new TypeError("key must be of type string or number");
-        }
-        this.Key = key;
-        this.Value = value;
-    }
-
-    var iterateList = function (prop) {
-        var result = [];
-        for (var i = 0; i < _dictList.length; i++) {
-            result.push(_dictList[i][prop]);
-        }
-        return result;
-    };
-
-    this.Count = function () {
-        return _dictList.length;
-    };
-
-    this.Keys = function () {
-        return iterateList("Key");
-    };
-
-    this.Values = function () {
-        return iterateList("Value");
-    };
-
-    this.Add = function (key, value) {
-        for (var i = 0; i < _dictList.length; i++) {
-            if (key === _dictList[i].Key) {
-                throw new Error("Dictionary already contains the key: " + key);
-            }
-        }
-        _dictList.push(new KeyValuePair(key, value));
-    };
-
-    this.Remove = function (key) {
-        var foundIdx = -1;
-        for (var i = 0; i < _dictList.length; i++) {
-            if (key === _dictList[i].Key) {
-                foundIdx = i;
-                break;
-            }
-        }
-        if (foundIdx === -1) {
-            throw new Error("Dictionary does not contain the key: " + key);
-        }
-        _dictList.splice(foundIdx, 1);
-    };
-
-    this.GetItem = function (key) {
-        var foundIdx = -1;
-        for (var i = 0; i < _dictList.length; i++) {
-            if (key === _dictList[i].Key) {
-                foundIdx = i;
-                break;
-            }
-        }
-        if (foundIdx === -1) {
-            throw new Error("Dictionary does not contain the key: " + key);
-        }
-        return _dictList[foundIdx];
-    };
-
-    this.Clear = function () {
-        _dictList = [];
-    };
-}
-
 /*
  * Constructor for the collections
  */
@@ -533,6 +413,7 @@ Collections.prototype = {
     Max: function (valueSelector) {
         var len = this.collection.length;
         var max = -Infinity;
+
         while (len--) {
             if (Number(valueSelector(this.collection[len])) > max) {
                 max = Number(valueSelector(this.collection[len]));
@@ -596,3 +477,108 @@ Collections.Zip = function (arrayA, arrayB) {
         return result;
     }
 };
+
+function Collections2(array) {
+    this.collection = array;
+    this.evaluationStack = [];
+}
+
+Collections2.ToCollection = function(array){
+    return new Collections2(array);
+};
+
+Collections2.prototype = {
+    Collect: function () {
+        var result = this.collection
+        for(var i = 0; i < this.evaluationStack.length; i++){
+            result = this.evaluationStack[i](result);
+        }
+        return result;
+    },
+
+    Where: function (predicate) {
+        this.evaluationStack.push(function(result) {
+            var results = [];
+            for (var i = 0; i < result.length; i++) {
+                if (predicate(result[i])) {
+                    results.push(result[i]);
+                }
+            }
+            return results;
+        });
+        return this;
+    },
+
+    SelectIndex:  function (valueSelector) {
+        this.evaluationStack.push(function(result) {
+            var results = [];
+            for (var i = 0; i < result.length; i++) {
+                results.push(valueSelector(i, result[i]));
+            }
+            return results;
+        });
+        return this;
+    },
+
+    GroupBy: function (keyFunction) {
+        this.evaluationStack.push(function(result){
+            var groups = {};
+            for (var i = 0; i < result.length; i++) {
+                var key = keyFunction(result[i]);
+                if (key in groups === false) {
+                    groups[key] = [];
+                }
+                groups[key].push(result[i]);
+            }
+            this.collection = Object.keys(groups).map(function (key) {
+                return {
+                    key: key,
+                    values: groups[key]
+                };
+            });
+        });
+        return this;
+    },
+
+    Flatten:  function() {
+        this.evaluationStack.push(function(result) {
+            function flatten(collection) {
+                return collection.reduce(function(a,b){
+                    if(Array.isArray(b)) {
+                        return a.concat(flatten(b))
+                    }
+                    return a.concat(b);
+                }, [])
+            }
+            return flatten(result);
+        });
+        return this;
+    },
+
+    Partition: function(partitionBy) {
+        this.evaluationStack.push(function(result) {
+            var resultA = [];
+            var resultB = [];
+            for(var i = 0; i < result.length; i++) {
+                if (partitionBy(result[i])) {
+                    resultA.push(result[i]);
+                } else {
+                    resultB.push(result[i]);
+                }
+            }
+            return [resultA, resultB];
+        });
+        return this;
+    },
+};
+
+var x = Collections2.ToCollection([1,2,44,2,3,8])
+    .Where(function(f) {
+        return (f % 2) === 0;
+    }).Where(function (f) {
+        return f === 44;
+    });
+console.log(x);
+
+
+
