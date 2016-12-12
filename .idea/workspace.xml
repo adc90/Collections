@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eee2462c-b43c-41c9-8c31-54c612474cf4" name="Default" comment="Change the format of file">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Dictionary.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/OrderedList.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/collections2.js" />
+    <list default="true" id="eee2462c-b43c-41c9-8c31-54c612474cf4" name="Default" comment="Change the format of filek">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Collections.iml" afterPath="$PROJECT_DIR$/.idea/Collections.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dictionary.js" afterPath="$PROJECT_DIR$/Dictionary.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OrderedList.js" afterPath="$PROJECT_DIR$/OrderedList.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collections.js" afterPath="$PROJECT_DIR$/collections.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collections2.js" afterPath="$PROJECT_DIR$/collections2.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collectionsTest.js" afterPath="$PROJECT_DIR$/collectionsTest.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.html" afterPath="$PROJECT_DIR$/test.html" />
     </list>
@@ -85,8 +90,8 @@
       <file leaf-file-name="collections2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collections2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2761">
-              <caret line="226" column="0" lean-forward="false" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
+            <state relative-caret-position="1445">
+              <caret line="489" column="54" lean-forward="false" selection-start-line="489" selection-start-column="54" selection-end-line="489" selection-end-column="54" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#170#624#0" expanded="false" />
@@ -302,7 +307,7 @@
       <workItem from="1481070690094" duration="134000" />
       <workItem from="1481070963081" duration="21880000" />
       <workItem from="1481345007507" duration="2020000" />
-      <workItem from="1481465956186" duration="8714000" />
+      <workItem from="1481465956186" duration="12523000" />
     </task>
     <task id="LOCAL-00001" summary="Adding comments">
       <created>1481072132453</created>
@@ -350,7 +355,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32748000" />
+    <option name="totallyTimeSpent" value="36557000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1088" y="-843" width="1096" height="1896" extended-state="6" />
@@ -525,8 +530,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/collections2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2761">
-          <caret line="226" column="0" lean-forward="false" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
+        <state relative-caret-position="1445">
+          <caret line="489" column="54" lean-forward="false" selection-start-line="489" selection-start-column="54" selection-end-line="489" selection-end-column="54" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#170#624#0" expanded="false" />

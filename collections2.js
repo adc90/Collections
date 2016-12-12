@@ -341,48 +341,143 @@ Collections2.prototype = {
         });
 
         return this;
-    }
+    },
 
-    /*
     First: function (predicate) {
         if (predicate === undefined) {
-            return this.collection[0];
+            this.Collect()[0];
         }
-        for (var i = 0; i < this.collection.length; i++) {
-            if (predicate(this.collection[i])) {
-                return this.collection[i];
+        var result = this.Collect();
+        for (var i = 0; i < result.length; i++) {
+            if (predicate(result[i])) {
+                return result[i];
             }
         }
         return null;
     },
 
     Last: function(predicate) {
+        var result = this.Collect();
         if (predicate === undefined) {
-            return this.collection[this.collection.length - 1];
+            return result[result.length - 1];
         }
-        for(var i = this.collection.length; i > 0; i--) {
-            if (predicate(this.collection[i])) {
-                return this.collection[i];
+        for(var i = result.length; i > 0; i--) {
+            if (predicate(result[i])) {
+                return result[i];
             }
         }
-    },
-
-    ToDictionary: function(keySelector, valueSelector) {
-        var dictionary = new Dictionary();
-        this.ForEach(function(i, v) {
-            dictionary.Add(keySelector(v), valueSelector(v));
-        });
-        return dictionary;
+        return null;
     },
 
     Contains:  function (item) {
-        for (var i = 0; i < this.collection.length; i++) {
-            if (this.collection[i] === item) {
+        var result = this.Collect();
+        for (var i = 0; i < result.length; i++) {
+            if (result[i] === item) {
                 return true;
             }
         }
         return false;
     },
+
+    Count: function (predicate) {
+        var result = this.Collect();
+        if (predicate === undefined) {
+            return result.length;
+        }
+        var cnt = 0;
+        for (var i = 0; i < result.length; i++) {
+            if (predicate(result[i])) {
+                cnt++;
+            }
+        }
+        return cnt;
+    },
+
+    All: function (predicate) {
+        var result = this.Collect();
+        for (var i = 0; i < result.length; i++) {
+            if (!predicate(result[i])) {
+                return false;
+            }
+        }
+        return true;
+    },
+
+    Any: function (predicate) {
+        var result = this.Collect();
+        if (predicate === undefined) {
+            return result.length > 0;
+        }
+        for (var i = 0; i < result.length; i++) {
+            if (predicate(result[i])) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    ToDictionary: function(keySelector, valueSelector) {
+        var result = this.Collect();
+        var dictionary = new Dictionary();
+        for(var i = 0; i < result.length; i++) {
+            dictionary.Add(keySelector(result[i]), valueSelector(result[i]));
+        }
+        return dictionary;
+    },
+
+    TakeWhile:  function (predicate) {
+        this.pushToEvalStack(function(input) {
+            var result = [];
+
+            for (var i = 0; i < input.length; i++) {
+                if (predicate(input[i])) {
+                    result.push(input[i]);
+                }else{
+                    break;
+                }
+            }
+            return result;
+        });
+        return this;
+    },
+
+    Skip: function (times) {
+        return this.Collect().slice(times);
+    },
+
+    Union: function(rightCollection, valueSelector) {
+        this.pushToEvalStack(function(input) {
+            var result = input.concat(rightCollection);
+            this.Distinct(valueSelector);
+        });
+        return this;
+    },
+
+    Min: function (valueSelector) {
+        var result = this.Collect();
+        var len = result.length;
+        var min = Infinity;
+        while (len--) {
+            if (Number(valueSelector(result[len])) < min) {
+                min = Number(valueSelector(result[len]));
+            }
+        }
+        return min;
+    },
+
+    Max: function (valueSelector) {
+        var result = this.Collect();
+        var len = result.length;
+        var max = -Infinity;
+
+        while (len--) {
+            if (Number(valueSelector(result[len])) > max) {
+                max = Number(valueSelector(result[len]));
+            }
+        }
+        return max;
+    }
+    /*
 
     Average: function(valueSelector) {
         var length = this.collection.length;
@@ -391,41 +486,6 @@ Collections2.prototype = {
         return sum / length;
     },
 
-
-    Count: function (predicate) {
-        if (predicate === undefined) {
-            return this.collection.length;
-        }
-        var cnt = 0;
-        for (var i = 0; i < this.collection.length; i++) {
-            if (predicate(this.collection[i])) {
-                cnt++;
-            }
-        }
-        return cnt;
-    },
-
-    All: function (predicate) {
-        for (var i = 0; i < this.collection.length; i++) {
-            if (!predicate(this.collection[i])) {
-                return false;
-            }
-        }
-        return true;
-    },
-
-
-    Any: function (predicate) {
-        if (predicate === undefined) {
-            return this.collection.length > 0;
-        }
-        for (var i = 0; i < this.collection.length; i++) {
-            if (predicate(this.collection[i])) {
-                return true;
-            }
-        }
-        return false;
-    },
 
     OrderBy: function (orderSelector, comparisonFunc) {
         var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
@@ -448,27 +508,6 @@ Collections2.prototype = {
     },
 
 
-    TakeWhile:  function (predicate) {
-        var result = [];
-
-        for (var i = 0; i < this.collection.length; i++) {
-            if (predicate(this.collection[i])) {
-                result.push(this.collection[i]);
-            }else{
-                break;
-            }
-        }
-        this.collection = result;
-        return this;
-    },
-
-    Union: function(rightCollection, valueSelector) {
-        this.collection = this.collection.concat(rightCollection);
-        this.Distinct(valueSelector);
-
-        return this;
-    },
-
     Sum:  function (valueSelector) {
         if (valueSelector === undefined) {
             valueSelector = this.utilities.identityFunction;
@@ -481,17 +520,6 @@ Collections2.prototype = {
         return sum;
     },
 
-    Min: function (valueSelector) {
-        var len = this.collection.length;
-        var min = Infinity;
-
-        while (len--) {
-            if (Number(valueSelector(this.collection[len])) < min) {
-                min = Number(valueSelector(this.collection[len]));
-            }
-        }
-        return min;
-    },
 
     ForEach: function (action) {
         for (var i = 0; i < this.collection.length; i++) {
@@ -499,28 +527,39 @@ Collections2.prototype = {
         }
     },
 
-    Max: function (valueSelector) {
-        var len = this.collection.length;
-        var max = -Infinity;
 
-        while (len--) {
-            if (Number(valueSelector(this.collection[len])) > max) {
-                max = Number(valueSelector(this.collection[len]));
-            }
-        }
-        return max;
-    },
-
-    Skip: function (times) {
-        return this.collection.slice(times);
-    }
 };
      */
 };
 
-var x = Collections2.ToCollection([1,2,4,5,6])
-    .Where(function(f) {
-        return f === 4;
-    }).Collect();
+OrderedCollections = function(array) {
+    this.constructor = new Collections(array);
+    console.log(this);
+};
+OrderedCollections.prototype = {
 
+    OrderBy: function() {
+
+    },
+    OrderByDesc: function() {
+
+    },
+    ThenBy: function() {
+
+    },
+    ThenByDesc: function() {
+
+    }
+};
+
+var x = new OrderedCollections();
 console.log(x);
+
+
+
+//var x = Collections2.ToCollection([1,2,4,5,6])
+//    .Where(function(f) {
+//        return f === 4;
+//    });
+//
+//console.log(x);
