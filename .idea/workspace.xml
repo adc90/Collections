@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eee2462c-b43c-41c9-8c31-54c612474cf4" name="Default" comment="k">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CollectionsTestNode.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collections.js" afterPath="$PROJECT_DIR$/collections.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collections2.js" afterPath="$PROJECT_DIR$/collections2.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -17,6 +20,28 @@
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="collections2.js" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/collections2.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="964">
+                    <caret line="619" column="33" lean-forward="false" selection-start-line="619" selection-start-column="33" selection-end-line="619" selection-end-column="33" />
+                    <folding>
+                      <element signature="n#!!doc" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -34,6 +59,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="CollectionsTestNode.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CollectionsTestNode.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="2" column="3" lean-forward="false" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="collectionsTest.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/collectionsTest.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -44,11 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="collections.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="collections.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collections.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8687">
-              <caret line="511" column="0" lean-forward="false" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
+            <state relative-caret-position="1305">
+              <caret line="572" column="2" lean-forward="false" selection-start-line="572" selection-start-column="0" selection-end-line="572" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -78,18 +113,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="collections2.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/collections2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1537">
-              <caret line="631" column="22" lean-forward="false" selection-start-line="631" selection-start-column="22" selection-end-line="631" selection-end-column="22" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -109,9 +132,10 @@
         <option value="$PROJECT_DIR$/collectionsTest.js" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/OrderedList.js" />
-        <option value="$PROJECT_DIR$/collections.js" />
         <option value="$PROJECT_DIR$/Dictionary.js" />
         <option value="$PROJECT_DIR$/collections2.js" />
+        <option value="$PROJECT_DIR$/CollectionsTestNode.js" />
+        <option value="$PROJECT_DIR$/collections.js" />
       </list>
     </option>
   </component>
@@ -174,6 +198,9 @@
       <method />
     </configuration>
     <configuration default="false" name="collections2.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="collections2.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
+    <configuration default="false" name="CollectionsTestNode.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="CollectionsTestNode.js" working-dir="$PROJECT_DIR$">
       <method />
     </configuration>
     <configuration default="true" type="#PerlConfigurationType" factoryName="Perl" show_console_on_std_err="false" show_console_on_std_out="false">
@@ -267,14 +294,16 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Node.js.collections.js" />
       <item index="1" class="java.lang.String" itemvalue="Node.js.collections2.js" />
+      <item index="2" class="java.lang.String" itemvalue="Node.js.CollectionsTestNode.js" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="Node.js.collections2.js" />
-        <item index="1" class="java.lang.String" itemvalue="Node.js.collections.js" />
+        <item index="1" class="java.lang.String" itemvalue="Node.js.CollectionsTestNode.js" />
+        <item index="2" class="java.lang.String" itemvalue="Node.js.collections.js" />
       </list>
     </recent_temporary>
   </component>
@@ -294,7 +323,7 @@
       <workItem from="1481465956186" duration="12523000" />
       <workItem from="1481760986565" duration="17000" />
       <workItem from="1481761016856" duration="402000" />
-      <workItem from="1481766961523" duration="1177000" />
+      <workItem from="1481766961523" duration="2477000" />
     </task>
     <task id="LOCAL-00001" summary="Adding comments">
       <created>1481072132453</created>
@@ -342,17 +371,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38281000" />
+    <option name="totallyTimeSpent" value="39581000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1088" y="-843" width="1096" height="1896" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978722" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32978722" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -385,26 +414,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/collections.js</url>
-          <line>578</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="9" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/collectionsTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="101" column="2" lean-forward="false" selection-start-line="101" selection-start-column="2" selection-end-line="101" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/collections.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8687">
@@ -751,14 +765,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/linq/jquery.linq.js" />
     <entry file="file://$PROJECT_DIR$/linq/linq.js" />
-    <entry file="file://$PROJECT_DIR$/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="24" lean-forward="false" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OrderedList.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -787,18 +793,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="24" lean-forward="false" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CollectionsTestNode.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="2" column="3" lean-forward="false" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/collections.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8687">
-          <caret line="511" column="0" lean-forward="false" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
+        <state relative-caret-position="1305">
+          <caret line="572" column="2" lean-forward="false" selection-start-line="572" selection-start-column="0" selection-end-line="572" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/collections2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1537">
-          <caret line="631" column="22" lean-forward="false" selection-start-line="631" selection-start-column="22" selection-end-line="631" selection-end-column="22" />
+        <state relative-caret-position="964">
+          <caret line="619" column="33" lean-forward="false" selection-start-line="619" selection-start-column="33" selection-end-line="619" selection-end-column="33" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
