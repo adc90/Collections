@@ -37,7 +37,7 @@ CollectionsUtil.prototype.identityFunction = function(v) {
 };
 
 
-function Collections2(array) {
+function Collections(array) {
     var evalStack = [];
     var collection = array;
 
@@ -57,11 +57,11 @@ function Collections2(array) {
 }
 
 /* Static methods not referring to the internal collection */
-Collections2.ToCollection = function (array) {
-    return new Collections2(array);
+Collections.ToCollection = function (array) {
+    return new Collections(array);
 };
 
-Collections2.Do = function (times, action) {
+Collections.Do = function (times, action) {
     if (typeof action !== 'function') {
         throw new Error('The predicate must be passed a function that returns a boolean');
     }
@@ -70,7 +70,7 @@ Collections2.Do = function (times, action) {
     }
 };
 
-Collections2.Range = function (min, max, step) {
+Collections.Range = function (min, max, step) {
     step = step === undefined ? 1 : step;
     var array = [];
     for (var i = min; i <= max; i += step) {
@@ -79,14 +79,14 @@ Collections2.Range = function (min, max, step) {
     return array;
 };
 
-Collections2.Remove = function (array, itm) {
+Collections.Remove = function (array, itm) {
     var index = array.indexOf(itm);
     array.splice(index);
 
     return array;
 };
 
-Collections2.Zip = function (arrayA, arrayB) {
+Collections.Zip = function (arrayA, arrayB) {
     if (arrayA.length !== arrayB.length) {
         throw new Error("Arrays are not the same size");
     } else {
@@ -98,7 +98,7 @@ Collections2.Zip = function (arrayA, arrayB) {
     }
 };
 
-Collections2.prototype = {
+Collections.prototype = {
     Collect:  function () {
         var result = this.getCollection();
         var evalStack = this.getEvalStack();
@@ -178,17 +178,6 @@ Collections2.prototype = {
     },
 
     Select: function (valueSelector) {
-        this.pushToEvalStack(function(input) {
-            var result = [];
-            for (var i = 0; i < input.length; i++) {
-                result.push(valueSelector(input[i]));
-            }
-            return result;
-        });
-        return this;
-    },
-
-    SelectIndex: function (valueSelector) {
         this.pushToEvalStack(function(input) {
             var result = [];
             for (var i = 0; i < input.length; i++) {
@@ -441,9 +430,9 @@ Collections2.prototype = {
         return this;
     },
 
-    Skip: function (times) {
-        return this.Collect().slice(times);
-    },
+    //Skip: function (times) {
+    //    return this.Collect().slice(times);
+    //},
 
     Union: function(rightCollection, valueSelector) {
         this.pushToEvalStack(function(input) {
@@ -482,32 +471,27 @@ Collections2.prototype = {
         var len = this.getCollection().length;
 
         return (this.Sum(valueSelector) / len);
-    }
-
-    /*
-
-
-
+    },
 
     Sum:  function (valueSelector) {
+        var result = this.Collect();
         if (valueSelector === undefined) {
             valueSelector = this.utilities.identityFunction;
         }
 
         var sum = 0;
-        for (var i = 0; i < this.collection.length; i++) {
-            sum += valueSelector(this.collection[i]);
+        for (var i = 0; i < result.length; i++) {
+            sum += valueSelector(result[i]);
         }
         return sum;
     },
 
-
     ForEach: function (action) {
-        for (var i = 0; i < this.collection.length; i++) {
-            action(i, this.collection[i]);
+        var result = this.Collect();
+        for (var i = 0; i < result.length; i++) {
+            action(i, result[i]);
         }
-    },
-     */
+    }
 };
 
 OrderedCollections = function(collections) {
@@ -515,31 +499,141 @@ OrderedCollections = function(collections) {
 };
 OrderedCollections.prototype = {
     ThenBy: function() { },
-    ThenByDesc: function() { }
-};
+    ThenByDesc: function() { },
 
-//var x = Collections2.ToCollection([1,2,4,5,6])
-//    .Where(function(f) {
-//        return f === 4;
-//    });
-//
-//console.log(x);
-//OrderBy: function (orderSelector, comparisonFunc) {
-//    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-//
-//    this.collection.sort(function (a, b) {
-//        return compareTo(orderSelector(a),orderSelector(b));
-//    }.bind(this));
-//
-//    return this;
-//},
-//
-//OrderByDescending:  function (orderSelector, comparisonFunc) {
-//    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-//
-//    this.collection = this.collection.sort(function (a, b) {
-//        return compareTo(orderSelector(b),orderSelector(a));
-//    }.bind(this));
-//
-//    return this;
-//},
+    Collect:  function () {
+        return this.collections.Collect();
+    },
+
+    Difference: function(rightCollection, comparisonFunction){
+        this.collections.Difference(rightCollection, comparisonFunction):
+        return this.collections;
+    },
+
+    Intersection: function(rightCollection, comparisonFunction) {
+        this.collections.Intersection(rightCollection, comparisonFunction):
+        return this.collections;
+    },
+
+    PullAt: function(array) {
+        this.collections.PullAt(array);
+        return this.collections;
+    },
+
+    Where: function (predicate) {
+        this.collections.Where(predicate);
+        return this.collections;
+    },
+
+    Reduce: function (reductionFunction) {
+        this.collections.Reduce(reductionFunction);
+        return this.collections;
+    },
+
+    Select: function (valueSelector) {
+        this.collections.Select(valueSelector);
+        return this.collections;
+    },
+
+    GroupBy: function (keyFunction) {
+        this.collections.GroupBy(keyFunction);
+        return this.collections;
+    },
+
+    Flatten: function() {
+        this.collections.Flatten();
+        return this.collections;
+    },
+
+    Partition: function(partitionBy) {
+        this.collections.Partition(partitionBy);
+        return this.collections;
+    },
+
+
+    Join: function (rightCollection, leftKey, rightKey, selectedResult) {
+        this.collections.Join(rightCollection, leftKey, rightKey, selectedResult);
+        return this.collections;
+    },
+
+    Reverse:  function() {
+        this.collections.Reverse();
+        return this.collections;
+    },
+
+    Without: function (predicate) {
+        this.collections.Without(predicate);
+        return this.collections;
+    },
+
+    Distinct: function (comparisonFunction) {
+        this.collections.Distinct(comparisonFunction);
+        return this.collections;
+    },
+
+    First: function (predicate) {
+        return this.collections.First(predicate);
+    },
+
+    Last: function(predicate) {
+        return this.collections.Last(predicate);
+    },
+
+    Contains:  function (item) {
+        return this.collections.Contains(item);
+    },
+
+    Count: function (predicate) {
+        return this.collections.Contains(predicate);
+    },
+
+    All: function (predicate) {
+        return this.collections.All(predicate);
+    },
+
+    Any: function (predicate) {
+        return this.collections.Any(predicate)
+    },
+
+    ToDictionary: function(keySelector, valueSelector) {
+        return this.collections.ToDictionary(keySelector, valueSelector);
+    },
+
+    TakeWhile:  function (predicate) {
+        this.collections.TakeWhile(predicate);
+        return this.collections;
+    },
+
+    //TODO: Needs to be evaluated to be lazy
+    //Skip: function (times) {
+    //    return this.Collect().slice(times);
+    //},
+
+    Union: function(rightCollection, valueSelector) {
+        this.collections.Union(rightCollection, valueSelector);
+        return this.collections;
+    },
+
+    Min: function (valueSelector) {
+        this.collections.Min(valueSelector);
+        return this.collections;
+
+    },
+
+    Max: function (valueSelector) {
+        this.collections.Max(valueSelector);
+        return this.collections;
+    },
+
+    Average: function(valueSelector) {
+        return this.Average(valueSelector);
+    },
+
+    Sum:  function (valueSelector) {
+        return this.Sum(valueSelector);
+    },
+
+    ForEach: function (action) {
+        this.collections.ForEach(action)
+    }
+};
