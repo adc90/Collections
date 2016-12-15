@@ -476,36 +476,17 @@ Collections2.prototype = {
             }
         }
         return max;
-    }
-    /*
+    },
 
     Average: function(valueSelector) {
-        var length = this.collection.length;
-        var sum = this.Sum(valueSelector);
+        var len = this.getCollection().length;
 
-        return sum / length;
-    },
+        return (this.Sum(valueSelector) / len);
+    }
+
+    /*
 
 
-    OrderBy: function (orderSelector, comparisonFunc) {
-        var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-
-        this.collection.sort(function (a, b) {
-            return compareTo(orderSelector(a),orderSelector(b));
-        }.bind(this));
-
-        return this;
-    },
-
-    OrderByDescending:  function (orderSelector, comparisonFunc) {
-        var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
-
-        this.collection = this.collection.sort(function (a, b) {
-            return compareTo(orderSelector(b),orderSelector(a));
-        }.bind(this));
-
-        return this;
-    },
 
 
     Sum:  function (valueSelector) {
@@ -526,36 +507,16 @@ Collections2.prototype = {
             action(i, this.collection[i]);
         }
     },
-
-
-};
      */
 };
 
-OrderedCollections = function(array) {
-    this.constructor = new Collections(array);
-    console.log(this);
+OrderedCollections = function(collections) {
+    this.collections = collections;
 };
 OrderedCollections.prototype = {
-
-    OrderBy: function() {
-
-    },
-    OrderByDesc: function() {
-
-    },
-    ThenBy: function() {
-
-    },
-    ThenByDesc: function() {
-
-    }
+    ThenBy: function() { },
+    ThenByDesc: function() { }
 };
-
-var x = new OrderedCollections();
-console.log(x);
-
-
 
 //var x = Collections2.ToCollection([1,2,4,5,6])
 //    .Where(function(f) {
@@ -563,3 +524,22 @@ console.log(x);
 //    });
 //
 //console.log(x);
+//OrderBy: function (orderSelector, comparisonFunc) {
+//    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
+//
+//    this.collection.sort(function (a, b) {
+//        return compareTo(orderSelector(a),orderSelector(b));
+//    }.bind(this));
+//
+//    return this;
+//},
+//
+//OrderByDescending:  function (orderSelector, comparisonFunc) {
+//    var compareTo = typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
+//
+//    this.collection = this.collection.sort(function (a, b) {
+//        return compareTo(orderSelector(b),orderSelector(a));
+//    }.bind(this));
+//
+//    return this;
+//},
