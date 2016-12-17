@@ -572,3 +572,13 @@ Collections2.prototype = {
     },
 };
 
+var x = Collections2.ToCollection([1,2,44,2,3,8])
+    .Where(function(f) {
+        return (f % 2) === 0;
+    }).Where(function (f) {
+        return f === 44;
+    });
+console.log(x);
+
+
+

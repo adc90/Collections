@@ -7,7 +7,9 @@
  */
 var Collections = (function() {
 
-    function CollectionsUtil() { }
+    function CollectionsUtil() {
+        this.thenBy = [];
+    }
 
     CollectionsUtil.prototype.isEqual = function(a, b) {
         if(typeof a !== typeof b)
@@ -37,14 +39,23 @@ var Collections = (function() {
         return v;
     };
 
+    CollectionsUtil.prototype.buildOrderedFunction = function() {
 
+    };
+
+    /* Collections constructor function */
     function Collections(array) {
         var evalStack = [];
         var collection = array;
 
-        this.pushToEvalStack = function(f) {
-            evalStack.push(f);
+        this.pushToEvalStack = function(funcNm, func) {
+            evalStack.push({
+                FuncName: funcNm,
+                Func: func
+            });
         };
+
+        this.orderedCollection = new OrderedCollections(this);
 
         this.getEvalStack = function() {
             return evalStack;
@@ -100,12 +111,12 @@ var Collections = (function() {
     };
 
     Collections.prototype = {
+
         Collect:  function () {
             var result = this.getCollection();
             var evalStack = this.getEvalStack();
             for(var i = 0; i < evalStack.length; i++){
-                console.log(evalStack[i].name);
-                result = evalStack[i](result);
+                result = evalStack[i]['Func'](result);
             }
             return result;
         },
@@ -115,7 +126,7 @@ var Collections = (function() {
         },
 
         Intersection: function(rightCollection, comparisonFunction) {
-            this.pushToEvalStack(function(input){
+            this.pushToEvalStack('Intersection', function(input){
                 var result = [];
                 var compareTo = function(a,b) {
                     return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
@@ -136,7 +147,7 @@ var Collections = (function() {
         },
 
         PullAt: function(array) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('PullAt', function(input) {
                 var result = [];
                 for(var i = 0; i < input.length; i++) {
                     result.push(input[array[i]]);
@@ -147,7 +158,7 @@ var Collections = (function() {
         },
 
         Where: function (predicate) {
-            this.pushToEvalStack(function Where(input) {
+            this.pushToEvalStack('Where', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     if (predicate(input[i])) {
@@ -160,7 +171,7 @@ var Collections = (function() {
         },
 
         Reduce: function (reductionFunction) {
-            this.pushToEvalStack(function(input){
+            this.pushToEvalStack('Reduce', function(input){
                 var val;
                 if(input.length === 1) {
                     return input[0];
@@ -179,7 +190,7 @@ var Collections = (function() {
         },
 
         Select: function (valueSelector) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Select', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     result.push(valueSelector(i, input[i]));
@@ -190,7 +201,7 @@ var Collections = (function() {
         },
 
         GroupBy: function (keyFunction) {
-            this.pushToEvalStack(function(input){
+            this.pushToEvalStack('GroupBy', function(input){
                 var groups = {};
                 for (var i = 0; i < input.length; i++) {
                     var key = keyFunction(input[i]);
@@ -211,7 +222,7 @@ var Collections = (function() {
         },
 
         Flatten: function() {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Flatten', function(input) {
                 function flatten(collection) {
                     return collection.reduce(function(a,b){
                         if(Array.isArray(b)) {
@@ -226,7 +237,7 @@ var Collections = (function() {
         },
 
         Partition: function(partitionBy) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Partition', function(input) {
                 var resultA = [];
                 var resultB = [];
                 for(var i = 0; i < input.length; i++) {
@@ -241,9 +252,8 @@ var Collections = (function() {
             return this;
         },
 
-
         Join: function (rightCollection, leftKey, rightKey, selectedResult) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Join', function(input) {
                 var result = [];
                 var leftIntermediateResult = [];
                 var rightIntermediateResult = [];
@@ -278,7 +288,7 @@ var Collections = (function() {
         },
 
         Reverse:  function() {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Reverse', function(input) {
                 var result = [];
                 for (var i = input.length - 1; i > -1; i--) {
                     result.push(input[i]);
@@ -290,7 +300,7 @@ var Collections = (function() {
         },
 
         Without: function (predicate) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Without', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     if (!predicate(input[i])) {
@@ -303,7 +313,7 @@ var Collections = (function() {
         },
 
         Distinct: function (comparisonFunction) {
-            this.pushToEvalStack(function(input) {
+            this.pushToEvalStack('Distinct', function(input) {
                 var result = [];
                 //If were're supplied with a value selector function we'll use that to compare the values.
                 //Otherwise we'll use the default deep compare as supplied by the utilities class in this library
@@ -331,6 +341,40 @@ var Collections = (function() {
             });
 
             return this;
+        },
+
+        Union: function(rightCollection, valueSelector) {
+            this.pushToEvalStack('Union', function(input) {
+                var result = input.concat(rightCollection);
+                this.Distinct(valueSelector);
+            });
+            return this;
+        },
+
+        TakeWhile:  function (predicate) {
+            this.pushToEvalStack('TakeWhile', function(input) {
+                var result = [];
+
+                for (var i = 0; i < input.length; i++) {
+                    if (predicate(input[i])) {
+                        result.push(input[i]);
+                    }else{
+                        break;
+                    }
+                }
+                return result;
+            });
+            return this;
+        },
+
+        OrderBy: function (orderSelector, comparisonFunc) {
+
+            return this.orderedCollection;
+        },
+
+        OrderByDescending:  function (orderSelector, comparisonFunc) {
+
+            return this.orderedCollection;
         },
 
         First: function (predicate) {
@@ -415,33 +459,9 @@ var Collections = (function() {
             return dictionary;
         },
 
-        TakeWhile:  function (predicate) {
-            this.pushToEvalStack(function(input) {
-                var result = [];
-
-                for (var i = 0; i < input.length; i++) {
-                    if (predicate(input[i])) {
-                        result.push(input[i]);
-                    }else{
-                        break;
-                    }
-                }
-                return result;
-            });
-            return this;
-        },
-
         //Skip: function (times) {
         //    return this.Collect().slice(times);
         //},
-
-        Union: function(rightCollection, valueSelector) {
-            this.pushToEvalStack(function(input) {
-                var result = input.concat(rightCollection);
-                this.Distinct(valueSelector);
-            });
-            return this;
-        },
 
         Min: function (valueSelector) {
             var result = this.Collect();
@@ -497,24 +517,31 @@ var Collections = (function() {
 
     function OrderedCollections(collections) {
         var collection = collections;
-
         this.getCollection = function()  {
             return collections;
         };
+
+        this.pushToEvalStack = function (funcNm, func) {
+            collection.pushToEvalStack(funcNm, func);
+        };
+
         this.collections = collections;
     }
 
     OrderedCollections.prototype = {
+
+        Collect:  function () {
+            return this.getCollection().Collect();
+        },
+
         ThenBy: function(valueSelector) {
+
             return this;
         },
 
         ThenByDesc: function(valueSelector) {
-            return this;
-        },
 
-        Collect:  function () {
-            return this.getCollection().Collect();
+            return this;
         },
 
         Difference: function(rightCollection, comparisonFunction){
@@ -561,7 +588,6 @@ var Collections = (function() {
             this.getCollection().Partition(partitionBy);
             return this.getCollection();
         },
-
 
         Join: function (rightCollection, leftKey, rightKey, selectedResult) {
             this.getCollection().Join(rightCollection, leftKey, rightKey, selectedResult);
@@ -653,9 +679,5 @@ var Collections = (function() {
     return Collections;
 })();
 
-var sum = Collections.ToCollection([12,5,6,7,4,3,5])
-    .Sum(function(f){
-        return f;
-    });
-console.log(sum);
+module.exports = Collections;
 
