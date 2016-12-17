@@ -9,15 +9,6 @@ var Collections = require('./collections2.js');
 var chai = require('chai');
 var expect = chai.expect;
 
-
-describe('Test', function () {
-    it('Some function', function () {
-        var a = 1;
-        expect(1).to.equal(1);
-    });
-
-});
-
 var active = Collections.ToCollection(testData)
     .Select(function(i,v){
         var nm = v.name.split(" ");
@@ -36,9 +27,8 @@ var active = Collections.ToCollection(testData)
             email: v.email,
             phone: v.phone
         };
-    });
-
-
-console.log(active.Sum(function(v){
-    return parseFloat(v.balance);
-}));
+    }).OrderBy(function(f){
+        return f.lastNm;
+    }).ThenBy(function(f) {
+        return f.lastNm;
+    }).First();

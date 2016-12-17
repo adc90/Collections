@@ -7,9 +7,7 @@
  */
 var Collections = (function() {
 
-    function CollectionsUtil() {
-        this.thenBy = [];
-    }
+    function CollectionsUtil() { }
 
     CollectionsUtil.prototype.isEqual = function(a, b) {
         if(typeof a !== typeof b)
@@ -43,6 +41,10 @@ var Collections = (function() {
 
     };
 
+    CollectionsUtil.prototype.getComparisonFunction = function(comparisonFunc) {
+        return typeof comparisonFunc === "function" ? comparisonFunc : this.utilities.compareTo;
+    };
+
     /* Collections constructor function */
     function Collections(array) {
         var evalStack = [];
@@ -55,8 +57,6 @@ var Collections = (function() {
             });
         };
 
-        this.orderedCollection = new OrderedCollections(this);
-
         this.getEvalStack = function() {
             return evalStack;
         };
@@ -66,6 +66,8 @@ var Collections = (function() {
         };
 
         this.utilities = new CollectionsUtil();
+
+        this.orderedCollection = new OrderedCollections(this);
     }
 
     /* Static methods not referring to the internal collection */
@@ -116,9 +118,10 @@ var Collections = (function() {
             var result = this.getCollection();
             var evalStack = this.getEvalStack();
             for(var i = 0; i < evalStack.length; i++){
-                result = evalStack[i]['Func'](result);
+                console.log(evalStack[i]['FuncName']);
+                //result = evalStack[i]['Func'](result);
             }
-            return result;
+            //return result;
         },
 
         Difference: function(rightCollection, comparisonFunction){
@@ -368,12 +371,18 @@ var Collections = (function() {
         },
 
         OrderBy: function (orderSelector, comparisonFunc) {
+            this.pushToEvalStack('OrderBy', function() {
+                var comparisonFunc = this.utilities.getComparisonFunction(comparisonFunc);
 
+            });
             return this.orderedCollection;
         },
 
         OrderByDescending:  function (orderSelector, comparisonFunc) {
+            this.pushToEvalStack('OrderByDescending' , function() {
+                var comparisonFunc = this.utilities.getComparisonFunction(comparisonFunc);
 
+            });
             return this.orderedCollection;
         },
 
@@ -534,14 +543,14 @@ var Collections = (function() {
             return this.getCollection().Collect();
         },
 
-        ThenBy: function(valueSelector) {
 
-            return this;
+        ThenBy: function (orderSelector, comparisonFunc) {
+            return this.collections;
         },
 
-        ThenByDesc: function(valueSelector) {
+        ThenByDesc: function (orderSelector, comparisonFunc) {
 
-            return this;
+            return this.collections;
         },
 
         Difference: function(rightCollection, comparisonFunction){
