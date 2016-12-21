@@ -7,6 +7,19 @@
  */
 var Collections = (function() {
 
+
+    function EvalStackElement(funcNm, func) {
+        this.FuncName = funcNm;
+        this.Func = func;
+    }
+
+    function OrderByElement(funcNm, orderSelector, comparisonFunc) {
+        this.FuncName = funcNm;
+        this.OrderSelector = orderSelector;
+        this.ComparisonFunction = comparisonFunc;
+    }
+
+
     function CollectionsUtil() { }
 
     CollectionsUtil.prototype.isEqual = function(a, b) {
@@ -29,16 +42,15 @@ var Collections = (function() {
         return true;
     };
 
-    CollectionsUtil.prototype.compareTo = function(a, b) {
-        return a > b ? 1 : (a < b ? -1 : 0);
+    CollectionsUtil.prototype.compareTo = function(a, b, thenBy) {
+        if(typeof thenBy !== "function") {
+            thenBy = function() { return this.identityFunction(0); };
+        }
+        return a > b ? 1 : (a < b ? -1 : thenBy());
     };
 
     CollectionsUtil.prototype.identityFunction = function(v) {
         return v;
-    };
-
-    CollectionsUtil.prototype.buildOrderedFunction = function() {
-
     };
 
     CollectionsUtil.prototype.getComparisonFunction = function(comparisonFunc) {
@@ -50,11 +62,14 @@ var Collections = (function() {
         var evalStack = [];
         var collection = array;
 
-        this.pushToEvalStack = function(funcNm, func) {
-            evalStack.push({
-                FuncName: funcNm,
-                Func: func
-            });
+        this.pushToEvalStack = function(elem) {
+            if(elem instanceof EvalStackElement) {
+                evalStack.push(elem);
+            } else if(elem instanceof OrderByElement) {
+                evalStack.push(elem);
+            } else {
+                throw new TypeError("Must be an instance of EvalStackElement or OrderByElement");
+            }
         };
 
         this.getEvalStack = function() {
@@ -70,47 +85,6 @@ var Collections = (function() {
         this.orderedCollection = new OrderedCollections(this);
     }
 
-    /* Static methods not referring to the internal collection */
-    Collections.ToCollection = function (array) {
-        return new Collections(array);
-    };
-
-    Collections.Do = function (times, action) {
-        if (typeof action !== 'function') {
-            throw new Error('The predicate must be passed a function that returns a boolean');
-        }
-        for (var i = 0; i < times; i++) {
-            action();
-        }
-    };
-
-    Collections.Range = function (min, max, step) {
-        step = step === undefined ? 1 : step;
-        var array = [];
-        for (var i = min; i <= max; i += step) {
-            array.push(i);
-        }
-        return array;
-    };
-
-    Collections.Remove = function (array, itm) {
-        var index = array.indexOf(itm);
-        array.splice(index);
-
-        return array;
-    };
-
-    Collections.Zip = function (arrayA, arrayB) {
-        if (arrayA.length !== arrayB.length) {
-            throw new Error("Arrays are not the same size");
-        } else {
-            var result = [];
-            for (var i = 0; i < arrayA.length; i++) {
-                result.push([arrayA[i], arrayB[i]]);
-            }
-            return result;
-        }
-    };
 
     Collections.prototype = {
 
@@ -118,7 +92,15 @@ var Collections = (function() {
             var result = this.getCollection();
             var evalStack = this.getEvalStack();
             for(var i = 0; i < evalStack.length; i++){
-                console.log(evalStack[i]['FuncName']);
+                var elem = evalStack[i];
+                if(elem instanceof EvalStackElement) {
+                    console.log('A');
+                } else if(elem instanceof OrderByElement) {
+                    console.log('B');
+                }
+
+
+                //console.log(evalStack[i]['FuncName']);
                 //result = evalStack[i]['Func'](result);
             }
             //return result;
@@ -129,7 +111,7 @@ var Collections = (function() {
         },
 
         Intersection: function(rightCollection, comparisonFunction) {
-            this.pushToEvalStack('Intersection', function(input){
+            this.pushToEvalStack(new EvalStackElement('Intersection', function(input){
                 var result = [];
                 var compareTo = function(a,b) {
                     return (comparisonFunction !== undefined && typeof comparisonFunction === "function")
@@ -145,23 +127,25 @@ var Collections = (function() {
                     }
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         PullAt: function(array) {
-            this.pushToEvalStack('PullAt', function(input) {
+            this.pushToEvalStack(new EvalStackElement('PullAt', function(input) {
                 var result = [];
                 for(var i = 0; i < input.length; i++) {
                     result.push(input[array[i]]);
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         Where: function (predicate) {
-            this.pushToEvalStack('Where', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Where', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     if (predicate(input[i])) {
@@ -169,12 +153,13 @@ var Collections = (function() {
                     }
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         Reduce: function (reductionFunction) {
-            this.pushToEvalStack('Reduce', function(input){
+            this.pushToEvalStack(new EvalStackElement('Reduce', function(input){
                 var val;
                 if(input.length === 1) {
                     return input[0];
@@ -188,23 +173,25 @@ var Collections = (function() {
                     }
                 }
                 return val;
-            });
+            }));
+
             return this;
         },
 
         Select: function (valueSelector) {
-            this.pushToEvalStack('Select', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Select', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     result.push(valueSelector(i, input[i]));
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         GroupBy: function (keyFunction) {
-            this.pushToEvalStack('GroupBy', function(input){
+            this.pushToEvalStack(new EvalStackElement('GroupBy', function(input){
                 var groups = {};
                 for (var i = 0; i < input.length; i++) {
                     var key = keyFunction(input[i]);
@@ -213,19 +200,19 @@ var Collections = (function() {
                     }
                     groups[key].push(input[i]);
                 }
-                this.collection = Object.keys(groups).map(function (key) {
+                return Object.keys(groups).map(function (key) {
                     return {
                         key: key,
                         values: groups[key]
                     };
                 });
-                return groups;
-            });
+            }));
+
             return this;
         },
 
         Flatten: function() {
-            this.pushToEvalStack('Flatten', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Flatten', function(input) {
                 function flatten(collection) {
                     return collection.reduce(function(a,b){
                         if(Array.isArray(b)) {
@@ -235,12 +222,13 @@ var Collections = (function() {
                     }, [])
                 }
                 return flatten(input);
-            });
+            }));
+
             return this;
         },
 
         Partition: function(partitionBy) {
-            this.pushToEvalStack('Partition', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Partition', function(input) {
                 var resultA = [];
                 var resultB = [];
                 for(var i = 0; i < input.length; i++) {
@@ -251,12 +239,13 @@ var Collections = (function() {
                     }
                 }
                 return [resultA, resultB];
-            });
+            }));
+
             return this;
         },
 
         Join: function (rightCollection, leftKey, rightKey, selectedResult) {
-            this.pushToEvalStack('Join', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Join', function(input) {
                 var result = [];
                 var leftIntermediateResult = [];
                 var rightIntermediateResult = [];
@@ -285,25 +274,25 @@ var Collections = (function() {
                     result.push(selectedResult(leftIntermediateResult[k], rightIntermediateResult[k]));
                 }
                 return result;
-            });
+            }));
 
             return this;
         },
 
-        Reverse:  function() {
-            this.pushToEvalStack('Reverse', function(input) {
+        Reverse: function() {
+            this.pushToEvalStack(new EvalStackElement('Reverse', function(input) {
                 var result = [];
                 for (var i = input.length - 1; i > -1; i--) {
                     result.push(input[i]);
                 }
                 return result;
-            });
+            }));
 
             return this;
         },
 
         Without: function (predicate) {
-            this.pushToEvalStack('Without', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Without', function(input) {
                 var result = [];
                 for (var i = 0; i < input.length; i++) {
                     if (!predicate(input[i])) {
@@ -311,12 +300,13 @@ var Collections = (function() {
                     }
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         Distinct: function (comparisonFunction) {
-            this.pushToEvalStack('Distinct', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Distinct', function(input) {
                 var result = [];
                 //If were're supplied with a value selector function we'll use that to compare the values.
                 //Otherwise we'll use the default deep compare as supplied by the utilities class in this library
@@ -327,12 +317,11 @@ var Collections = (function() {
                 }.bind(this);
 
                 function exists(results, item) {
-                    var inArray = false;
                     for (var i = 0; i < result.length; i++) {
                         if (compareTo(result[i], item))
                             return true;
                     }
-                    return inArray;
+                    return false;
                 }
 
                 for (var i = 0; i < input.length; i++) {
@@ -341,21 +330,22 @@ var Collections = (function() {
                     }
                 }
                 return result;
-            });
+            }));
 
             return this;
         },
 
         Union: function(rightCollection, valueSelector) {
-            this.pushToEvalStack('Union', function(input) {
+            this.pushToEvalStack(new EvalStackElement('Union', function(input) {
                 var result = input.concat(rightCollection);
                 this.Distinct(valueSelector);
-            });
+            }));
+
             return this;
         },
 
         TakeWhile:  function (predicate) {
-            this.pushToEvalStack('TakeWhile', function(input) {
+            this.pushToEvalStack(new EvalStackElement('TakeWhile', function(input) {
                 var result = [];
 
                 for (var i = 0; i < input.length; i++) {
@@ -366,23 +356,20 @@ var Collections = (function() {
                     }
                 }
                 return result;
-            });
+            }));
+
             return this;
         },
 
         OrderBy: function (orderSelector, comparisonFunc) {
-            this.pushToEvalStack('OrderBy', function() {
-                var comparisonFunc = this.utilities.getComparisonFunction(comparisonFunc);
+            this.pushToEvalStack(new OrderByElement('OrderBy', orderSelector, comparisonFunc));
 
-            });
             return this.orderedCollection;
         },
 
-        OrderByDescending:  function (orderSelector, comparisonFunc) {
-            this.pushToEvalStack('OrderByDescending' , function() {
-                var comparisonFunc = this.utilities.getComparisonFunction(comparisonFunc);
+        OrderByDesc:  function (orderSelector, comparisonFunc) {
+            this.pushToEvalStack(new OrderByElement('OrderByDesc', orderSelector, comparisonFunc));
 
-            });
             return this.orderedCollection;
         },
 
@@ -468,10 +455,6 @@ var Collections = (function() {
             return dictionary;
         },
 
-        //Skip: function (times) {
-        //    return this.Collect().slice(times);
-        //},
-
         Min: function (valueSelector) {
             var result = this.Collect();
             var len = result.length;
@@ -498,9 +481,16 @@ var Collections = (function() {
         },
 
         Average: function(valueSelector) {
-            var len = this.getCollection().length;
+            var result = this.Collect();
+            if (valueSelector === undefined) {
+                valueSelector = this.utilities.identityFunction;
+            }
 
-            return (this.Sum(valueSelector) / len);
+            var sum = 0;
+            for (var i = 0; i < result.length; i++) {
+                sum += valueSelector(result[i]);
+            }
+            return sum / result.length;
         },
 
         Sum:  function (valueSelector) {
@@ -521,6 +511,49 @@ var Collections = (function() {
             for (var i = 0; i < result.length; i++) {
                 action(i, result[i]);
             }
+        }
+
+    };
+
+    /* Static methods not referring to the internal collection */
+    Collections.ToCollection = function (array) {
+        return new Collections(array);
+    };
+
+    Collections.Do = function (times, action) {
+        if (typeof action !== 'function') {
+            throw new Error('The predicate must be passed a function that returns a boolean');
+        }
+        for (var i = 0; i < times; i++) {
+            action();
+        }
+    };
+
+    Collections.Range = function (min, max, step) {
+        step = step === undefined ? 1 : step;
+        var array = [];
+        for (var i = min; i <= max; i += step) {
+            array.push(i);
+        }
+        return array;
+    };
+
+    Collections.Remove = function (array, itm) {
+        var index = array.indexOf(itm);
+        array.splice(index);
+
+        return array;
+    };
+
+    Collections.Zip = function (arrayA, arrayB) {
+        if (arrayA.length !== arrayB.length) {
+            throw new Error("Arrays are not the same size");
+        } else {
+            var result = [];
+            for (var i = 0; i < arrayA.length; i++) {
+                result.push([arrayA[i], arrayB[i]]);
+            }
+            return result;
         }
     };
 
@@ -545,12 +578,15 @@ var Collections = (function() {
 
 
         ThenBy: function (orderSelector, comparisonFunc) {
-            return this.collections;
+            this.pushToEvalStack(new OrderByElement('ThenBy', orderSelector, comparisonFunc));
+
+            return this;
         },
 
         ThenByDesc: function (orderSelector, comparisonFunc) {
+            this.pushToEvalStack(new OrderByElement('ThenByDesc', orderSelector, comparisonFunc));
 
-            return this.collections;
+            return this;
         },
 
         Difference: function(rightCollection, comparisonFunction){
@@ -651,11 +687,6 @@ var Collections = (function() {
             return this.getCollection();
         },
 
-        //TODO: Needs to be evaluated to be lazy
-        //Skip: function (times) {
-        //    return this.Collect().slice(times);
-        //},
-
         Union: function(rightCollection, valueSelector) {
             this.getCollection().Union(rightCollection, valueSelector);
             return this.getCollection();
@@ -664,7 +695,6 @@ var Collections = (function() {
         Min: function (valueSelector) {
             this.getCollection().Min(valueSelector);
             return this.getCollection();
-
         },
 
         Max: function (valueSelector) {
