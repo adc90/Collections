@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eee2462c-b43c-41c9-8c31-54c612474cf4" name="Default" comment="k">
+    <list default="true" id="eee2462c-b43c-41c9-8c31-54c612474cf4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CollectionsTestNode.js" afterPath="$PROJECT_DIR$/CollectionsTestNode.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collections2.js" afterPath="$PROJECT_DIR$/collections2.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,8 +25,8 @@
             <file leaf-file-name="collections2.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/collections2.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="961">
-                    <caret line="93" column="49" lean-forward="false" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
+                  <state relative-caret-position="587">
+                    <caret line="89" column="0" lean-forward="true" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
                     <folding>
                       <element signature="n#!!doc" expanded="true" />
                     </folding>
@@ -60,8 +58,8 @@
       <file leaf-file-name="CollectionsTestNode.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CollectionsTestNode.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="69" column="50" lean-forward="false" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="50" />
+            <state relative-caret-position="119">
+              <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -363,7 +361,7 @@
       <workItem from="1481760986565" duration="17000" />
       <workItem from="1481761016856" duration="402000" />
       <workItem from="1481766961523" duration="26028000" />
-      <workItem from="1482362484446" duration="631000" />
+      <workItem from="1482362484446" duration="1852000" />
     </task>
     <task id="LOCAL-00001" summary="Adding comments">
       <created>1481072132453</created>
@@ -407,11 +405,18 @@
       <option name="project" value="LOCAL" />
       <updated>1481240781511</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added order by function">
+      <created>1482363138209</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1482363138209</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63763000" />
+    <option name="totallyTimeSpent" value="64984000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -459,7 +464,9 @@
     <MESSAGE value="Added pluck method" />
     <MESSAGE value="Added property check" />
     <MESSAGE value="Change the format of file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the format of file" />
+    <MESSAGE value="k" />
+    <MESSAGE value="Added order by function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added order by function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -861,8 +868,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/collections2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="961">
-          <caret line="93" column="49" lean-forward="false" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
+        <state relative-caret-position="587">
+          <caret line="89" column="0" lean-forward="true" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -871,8 +878,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CollectionsTestNode.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="69" column="50" lean-forward="false" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="50" />
+        <state relative-caret-position="119">
+          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
