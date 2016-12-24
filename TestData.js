@@ -25498,6 +25498,4 @@ var dataRepo = [
     }
 ];
 
-module.exports = (function() {
-    return dataRepo;
-})();
+module.exports = dataRepo;

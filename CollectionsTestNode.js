@@ -30,65 +30,31 @@ var active = Collections.ToCollection(testData)
         return f.lastNm;
     }).Collect();
 
-function sortFn() {
-    var sortByProps = Array.prototype.slice.call(arguments),
-        cmpFn = function(left, right, sortOrder) {
-            var sortMultiplier = sortOrder === "asc" ? 1 : -1;
+//var arr = [
+//    { name: 'marry', Total: 1, age: 2 },
+//    { name: 'larry',  Total: 2, age: 3 },
+//    { name: 'marry',  Total: 3, age: 3 },
+//    { name: 'larry',  Total: 3, age: 3 },
+//    { name: 'larry',  Total: 3, age: 4 },
+//];
+//function test (a,b) {
+//    if(a.Total>b.Total) {
+//        return 1;
+//    } else if(a.Total<b.Total)  {
+//        return -1;
+//    } else {
+//        return 0;
+//    }
+//}
+//
+//var x = arr.sort(function(a,b){
+//    if(a.Name>b.Name) {
+//        return 1;
+//    } else if(a.Name<b.Name) {
+//        return -1;
+//    } else {
+//        return test(a,b);
+//    }
+//});
 
-            if (left > right) {
-                return +1 * sortMultiplier;
-            }
-            if (left < right) {
-                return -1 * sortMultiplier;
-            }
-            return 0;
-        };
-
-
-    return function(sortLeft, sortRight) {
-        // get value from object by complex key
-        var getValueByStr = function(obj, path) {
-            var i, len;
-
-            //prepare keys
-            path = path.replace('[', '.');
-            path = path.replace(']', '');
-            path = path.split('.');
-
-            len = path.length;
-
-            for (i = 0; i < len; i++) {
-                if (!obj || typeof obj !== 'object') {
-                    return obj;
-                }
-                obj = obj[path[i]];
-            }
-
-            return obj;
-        };
-
-        return sortByProps.map(function(property) {
-            return cmpFn(getValueByStr(sortLeft, property.prop), getValueByStr(sortRight, property.prop), property.sortOrder);
-        }).reduceRight(function(left, right) {
-            return right || left;
-        });
-    };
-}
-
-var arr = [
-    { name: 'marry', LocalizedData: { 'en-US': { Value: 10000 } } },
-    { name: 'larry', LocalizedData: { 'en-US': { Value: 2 } } },
-    { name: 'marry', LocalizedData: { 'en-US': { Value: 100 } } },
-    { name: 'larry', LocalizedData: { 'en-US': { Value: 1 } } }
-];
-
-
-arr.sort(sortFn({
-    prop: "name",
-    sortOrder: "asc"
-}, {
-    prop: "LocalizedData[en-US].Value",
-    sortOrder: "desc"
-}));
-console.log(arr);
-
+//console.log(x);

@@ -13,13 +13,13 @@ function Dictionary() {
         this.Value = value;
     }
 
-    var iterateList = function (prop) {
+    function iterateList (prop) {
         var result = [];
         for (var i = 0; i < _dictList.length; i++) {
             result.push(_dictList[i][prop]);
         }
         return result;
-    };
+    }
 
     this.Count = function () {
         return _dictList.length;

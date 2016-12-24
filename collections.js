@@ -152,7 +152,7 @@ Collections.prototype = {
     Select: function (valueSelector) {
         var result = [];
         for (var i = 0; i < this.collection.length; i++) {
-            result.push(valueSelector(this.collection[i]));
+            result.push(valueSelector(i, this.collection[i]));
         }
         this.collection = result;
         return this;
@@ -459,6 +459,7 @@ Collections.Range = function (min, max, step) {
     }
     return array;
 };
+
 Collections.Remove = function (array, itm) {
     var index = array.indexOf(itm);
     array.splice(index);
@@ -478,108 +479,6 @@ Collections.Zip = function (arrayA, arrayB) {
     }
 };
 
-function Collections2(array) {
-    this.collection = array;
-    this.evaluationStack = [];
-}
-
-Collections2.ToCollection = function(array){
-    return new Collections2(array);
-};
-
-Collections2.prototype = {
-    Collect: function () {
-        var result = this.collection
-        for(var i = 0; i < this.evaluationStack.length; i++){
-            result = this.evaluationStack[i](result);
-        }
-        return result;
-    },
-
-    Where: function (predicate) {
-        this.evaluationStack.push(function(result) {
-            var results = [];
-            for (var i = 0; i < result.length; i++) {
-                if (predicate(result[i])) {
-                    results.push(result[i]);
-                }
-            }
-            return results;
-        });
-        return this;
-    },
-
-    SelectIndex:  function (valueSelector) {
-        this.evaluationStack.push(function(result) {
-            var results = [];
-            for (var i = 0; i < result.length; i++) {
-                results.push(valueSelector(i, result[i]));
-            }
-            return results;
-        });
-        return this;
-    },
-
-    GroupBy: function (keyFunction) {
-        this.evaluationStack.push(function(result){
-            var groups = {};
-            for (var i = 0; i < result.length; i++) {
-                var key = keyFunction(result[i]);
-                if (key in groups === false) {
-                    groups[key] = [];
-                }
-                groups[key].push(result[i]);
-            }
-            this.collection = Object.keys(groups).map(function (key) {
-                return {
-                    key: key,
-                    values: groups[key]
-                };
-            });
-        });
-        return this;
-    },
-
-    Flatten:  function() {
-        this.evaluationStack.push(function(result) {
-            function flatten(collection) {
-                return collection.reduce(function(a,b){
-                    if(Array.isArray(b)) {
-                        return a.concat(flatten(b))
-                    }
-                    return a.concat(b);
-                }, [])
-            }
-            return flatten(result);
-        });
-        return this;
-    },
-
-    Partition: function(partitionBy) {
-        this.evaluationStack.push(function(result) {
-            var resultA = [];
-            var resultB = [];
-            for(var i = 0; i < result.length; i++) {
-                if (partitionBy(result[i])) {
-                    resultA.push(result[i]);
-                } else {
-                    resultB.push(result[i]);
-                }
-            }
-            return [resultA, resultB];
-        });
-        return this;
-    },
-};
-
-var x = Collections2.ToCollection([1,2,44,2,3,8])
-    .Where(function(f) {
-        return (f % 2) === 0;
-    }).Where(function (f) {
-        return f === 44;
-    });
-console.log(x);
-
-
+module.exports = Collections;
 
 
