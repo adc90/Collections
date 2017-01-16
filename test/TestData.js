@@ -25498,4 +25498,37 @@ var dataRepo = [
     }
 ];
 
-module.exports = dataRepo;
+var GradeLevel = { FirstYear: 1, SecondYear: 2, ThirdYear: 3, FourthYear: 4 };
+var students = [
+    {FirstName: "Terry", LastName: "Adams", ID: 120, Year: GradeLevel.SecondYear, ExamScores: [99, 82, 81, 79]},
+    {FirstName: "Fadi", LastName: "Fakhouri", ID: 116, Year: GradeLevel.ThirdYear, ExamScores: [99, 86, 90, 94]},
+    {FirstName: "Hanying", LastName: "Feng", ID: 117, Year: GradeLevel.FirstYear, ExamScores: [93, 92, 80, 87]},
+    {FirstName: "Cesar", LastName: "Garcia", ID: 114, Year: GradeLevel.FourthYear, ExamScores: [97, 89, 85, 82]},
+    {FirstName: "Debra", LastName: "Garcia", ID: 115, Year: GradeLevel.ThirdYear, ExamScores: [35, 72, 91, 70]},
+    {FirstName: "Hugo", LastName: "Garcia", ID: 118, Year: GradeLevel.SecondYear, ExamScores: [92, 90, 83, 78]},
+    {FirstName: "Sven", LastName: "Mortensen", ID: 113, Year: GradeLevel.FirstYear, ExamScores: [88, 94, 65, 91]},
+    {FirstName: "Claire", LastName: "O'Donnell", ID: 112, Year: GradeLevel.FourthYear, ExamScores: [75, 84, 91, 39]},
+    {FirstName: "Svetlana", LastName: "Omelchenko", ID: 111, Year: GradeLevel.SecondYear, ExamScores: [97, 92, 81, 60]},
+    {FirstName: "Lance", LastName: "Tucker", ID: 119, Year: GradeLevel.ThirdYear, ExamScores: [68, 79, 88, 92]},
+    {FirstName: "Michael", LastName: "Tucker", ID: 122, Year: GradeLevel.FirstYear, ExamScores: [94, 92, 91, 91]},
+    {FirstName: "Eugene", LastName: "Zabokritski", ID: 121, Year: GradeLevel.FourthYear, ExamScores: [96, 85, 91, 60]}
+];
+
+
+var familyNames = [
+    { Age: 26, FirstName: 'Aaron', LastName: 'Clevenger' },
+    { Age: 51, FirstName: 'Lisa', LastName: 'Clevenger' },
+    { Age: 18, FirstName: 'Hannah', LastName: 'Clevenger' },
+    { Age: 55, FirstName: 'Gary', LastName: 'Clevenger' },
+    { Age: 86, FirstName: 'Merle', LastName: 'Clevenger' },
+    { Age: 81, FirstName: 'Merle', LastName: 'Clevenger' },
+    { Age: 82, FirstName: 'Libby', LastName: 'Clevenger' },
+];
+
+// module.exports = (function() {
+//     return {
+//         DataRepo: dataRepo,
+//         Students: students,
+//         Family: familyNames
+//     };
+// })();

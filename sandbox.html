@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./test/TestData.js"></script>
+    <script src="collections.js"></script>
+    <script>
+        var data = Collections.ToCollection(familyNames)
+            .OrderBy(function(f) {
+                return f.FirstName;
+            }).ThenBy(function(f){
+                return f.Age;
+            }).Collect();
+        console.log(data);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
